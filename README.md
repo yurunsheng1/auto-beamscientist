@@ -21,6 +21,32 @@ GitHub Actions builds and checks the catalog, then deploys `dist/` to GitHub Pag
 
 The catalog and paper count are generated into HTML at build time, so all papers remain readable without JavaScript. Search filters title and topic in the browser. No hard-coded paper limit. Existing entries are distinct studies; earlier formatting variants of the same manuscript are not counted separately.
 
+## Automatic manuscript publishing
+
+`export_manuscripts.py` runs on 4090hk and exports only manuscripts whose pipeline
+has reached `completed` / `finished` and has saved its automatic review. Intermediate
+PDFs do not qualify. It extracts the actual title, author and compiled abstract,
+renders the first page, and supplies the PDF SHA-256. Retries of the same study
+update one catalog entry. This completion gate describes a finished research
+report; it does not imply a positive result or journal acceptance.
+
+`sync_manuscripts.py` runs on the connected Mac, reads the public artifacts through
+the existing VS Code tunnel bridge, verifies them, rebuilds and checks the site,
+commits the changed catalog/assets, and pushes to `github/main`. The existing
+GitHub Pages workflow deploys the update. The publisher uses the Mac's existing
+Git credentials; no model API keys or GitHub credentials are uploaded to the GPU
+or included in public bundles. Failed pushes retry without duplicate studies.
+
+```sh
+python3 sync_manuscripts.py --watch --push --interval 60 --max-hours 8 \
+  --state-dir ../../runs/site_sync
+```
+
+The Mac and its VS Code connection to 4090hk must stay online while syncing.
+Progress is recorded in `publisher_state.json` and `publisher.log` in the state
+directory. Create `STOP` there to stop the watcher. Uncommitted website edits or
+a divergent branch stop that sync attempt and preserve the edits.
+
 ## Research provenance
 
 - `core-energy-concentration`: `runs/pgcd/paper/preprint1.pdf`, preview from the matching `build/first_page.png`.
