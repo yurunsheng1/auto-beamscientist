@@ -35,7 +35,7 @@ def build():
 <p class="paper-summary">{esc(p['summary'])}</p><p class="paper-author">{esc(p['authors'])}</p></div>
 <div class="paper-actions"><a class="pdf-button" href="{esc(p['pdf'])}" target="_blank" rel="noopener" aria-label="Read PDF: {esc(p['title'])}">Read PDF <span aria-hidden="true">↗</span></a><a class="download" href="{esc(p['pdf'])}" download="{esc(p['id'])}.pdf" aria-label="Download PDF: {esc(p['title'])}">Download <span aria-hidden="true">↓</span></a></div></article>''')
     template=(ROOT/'template.html').read_text()
-    output=template.replace('<!-- PAPERS -->','\n'.join(cards)).replace('{{PAPER_COUNT}}',str(len(papers)))
+    output=template.replace('<!-- PAPERS -->','\n'.join(cards)).replace('{{PAPER_COUNT}}',str(len(papers))).replace('{{PAPER_LABEL}}','manuscript' if len(papers)==1 else 'manuscripts')
     (ROOT/'dist/index.html').write_text(output)
     (ROOT/'dist/.nojekyll').touch()
     print(f'Built WIP homepage with {len(papers)} manuscripts')

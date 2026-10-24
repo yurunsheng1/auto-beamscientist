@@ -1,6 +1,6 @@
 # Auto BeamScientist — WIP project website
 
-**AI for better optics.** An early project preview emphasizing autonomous optical research and PDF manuscripts. Static GitHub Pages site; no sign-in, backend or model API calls. Editorial direction references the light academic presentation of [AFTD](https://rainwangphy.github.io/aftd-platform/); layout and copy are original.
+**AI for better optics.** An early project preview emphasizing autonomous optical research and PDF manuscripts. The palette uses optical blue and cyan, with restrained spectral accents. Static GitHub Pages site; no sign-in, backend or model API calls. Editorial direction references the light academic presentation of [AFTD](https://rainwangphy.github.io/aftd-platform/); layout and copy are original.
 
 ## Build and preview
 
@@ -24,6 +24,6 @@ The catalog and paper count are generated into HTML at build time, so all papers
 ## Research provenance
 
 - `core-energy-concentration`: `runs/pgcd/paper/preprint1.pdf`, preview from the matching `build/first_page.png`.
-- `phase-only-screening`: `runs/preprint1/preprint1.pdf`, preview from the matching `first_page.png`.
+The earlier phase-only manuscript is not currently featured. Its original research files remain in the project workspace.
 
 These are simulation research manuscripts, not claimed peer-reviewed publications. Keep `SIMULATION_ONLY`, `NOVELTY_NOT_VERIFIED`, and `NOT_PUBLICATION_READY` until reviewed status changes are supported. The abstract hero artwork is decorative, not physics output. Website changes do not modify or execute the research solver. No live-status or daily-release schedule is claimed.

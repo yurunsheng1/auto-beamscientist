@@ -12,19 +12,5 @@
     "abstract": "A numerical study of Gaussian-apodized Pearcey and butterfly fields in scalar free-space propagation. A spatial-parity interpretation and equal-budget searches support a conditional concentration advantage within the stated field and phase classes. The study does not establish superiority over unrestricted focusing optics.",
     "limitations": "Simulation study. The advantage depends on the stated field and phase constraints. Peer review and prior-art novelty have not been established.",
     "sha256": "15000675aa066b30fa4fa3c306aa5740b6479c6e529ea0d371b41b26224f9c08"
-  },
-  {
-    "id": "phase-only-screening",
-    "title": "Phase-only axial intensity shaping in a scalar band-limited propagation model: a simulation-only screening study",
-    "authors": "AutoPhotonics Project",
-    "year": 2026,
-    "topic": "Beam shaping",
-    "status": "Research manuscript",
-    "pdf": "assets/phase-only-screening.pdf",
-    "preview": "assets/phase-only-preview.png",
-    "summary": "A simulation study of phase-only shaping over a fixed axial observation window.",
-    "abstract": "This study examines whether passive phase-only modulation of an equal-power Gaussian beam raises the minimum on-axis intensity over a fixed 49–71 mm window. A seeded hybrid search is compared with optimized defocus and quadratic-plus-quartic controls in a scalar propagation model. The reported improvement concerns this fixed objective; independent propagation, realistic hardware and experimental validation remain unestablished.",
-    "limitations": "Simulation-only numerical screening. This manuscript does not establish independent-solver validation, experimental verification, prior-art novelty or publication readiness.",
-    "sha256": "4a199741f6e636b02484aa82505ef5545aa0ba8b83d7c65a989015f8b9c6a176"
   }
 ]
