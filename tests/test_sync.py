@@ -149,6 +149,15 @@ class ExportTests(unittest.TestCase):
             self.assertEqual(metadata['provenance']['completed_at_utc'], '2026-10-24T03:16:00+00:00')
             self.assertEqual(metadata['provenance']['revised_at_utc'], '2026-10-24T03:57:00+00:00')
 
+    def test_system_batches_export_completed_manuscripts(self):
+        with tempfile.TemporaryDirectory() as temp, mock.patch.object(exporter.subprocess,'run',side_effect=render):
+            source=Path(temp);batch=source/'batch_0001';batch.mkdir()
+            fixture(batch)
+            bundle=exporter.collect(source)
+            self.assertEqual(bundle['errors'],[])
+            self.assertEqual(len(bundle['entries']),1)
+            self.assertEqual(bundle['entries'][0]['metadata']['provenance']['study'],'batch_0001/branch_02/evidence')
+
     def test_received_tampering_and_path_traversal_are_rejected(self):
         with tempfile.TemporaryDirectory() as temp, mock.patch.object(exporter.subprocess, 'run', side_effect=render):
             source = Path(temp)

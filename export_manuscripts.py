@@ -130,7 +130,7 @@ def collect(source):
     source = Path(source).resolve()
     entries, errors = {}, []
     # A later completed revision replaces the same study, never adds a new paper.
-    states = sorted(source.glob('branch_*/manuscript*/paper_pipeline.json'),
+    states = sorted([*source.glob('branch_*/manuscript*/paper_pipeline.json'),*source.glob('batch_*/branch_*/manuscript*/paper_pipeline.json')],
                     key=lambda p: p.stat().st_mtime)
     for statefile in states:
         try:
@@ -141,7 +141,7 @@ def collect(source):
             errors.append({'artifact': str(statefile.relative_to(source)),
                            'error': str(exc), 'error_type': type(exc).__name__})
     withdrawn=[]
-    for branch in sorted(source.glob('branch_*')):
+    for branch in sorted([*source.glob('branch_*'),*source.glob('batch_*/branch_*')]):
         marker=branch/'publication_status.json'
         if marker.exists() and json.loads(marker.read_text()).get('status')=='withdrawn':
             study=str((branch/'evidence').relative_to(source))
