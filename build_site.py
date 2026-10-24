@@ -41,13 +41,17 @@ def load_papers(path=None):
         if not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*',paper['id']) or paper['id'] in ids:
             raise ValueError('Paper IDs must be unique URL-safe slugs')
         ids.add(paper['id'])
-        for key in ('pdf','preview'):
+        for key in (('pdf','preview','evidence') if paper.get('evidence') else ('pdf','preview')):
             asset=ROOT/'dist'/paper[key]
             if not asset.resolve().is_relative_to((ROOT/'dist/assets').resolve()) or not asset.is_file():
                 raise ValueError(f'Missing or unsafe {key} asset')
         pdf=(ROOT/'dist'/paper['pdf']).read_bytes()
         if not pdf.startswith(b'%PDF-') or hashlib.sha256(pdf).hexdigest()!=paper['sha256']:
             raise ValueError('PDF fingerprint mismatch')
+        if paper.get('evidence'):
+            data=(ROOT/'dist'/paper['evidence']).read_bytes()
+            if not data.startswith(b'PK') or hashlib.sha256(data).hexdigest()!=paper.get('evidence_sha256'):
+                raise ValueError('Evidence archive fingerprint mismatch')
     return papers
 
 def build():
@@ -69,11 +73,12 @@ def build():
                             'ID':p['id'],'PDF':p['pdf']}.items():
             citation_html=citation_html.replace('{{'+token+'}}',esc(value))
         (ROOT/'dist'/citation_page).write_text(citation_html)
+        evidence_link=(f'<a class="download" href="{esc(p["evidence"])}" download>Evidence <span aria-hidden="true">↓</span></a>' if p.get('evidence') else '')
         cards.append(f'''<article class="paper" id="{esc(p['id'])}" data-search="{esc((p['title']+' '+p['topic']).lower(),quote=True)}">
 <div class="paper-no">{index:02d}</div><div class="paper-main"><p class="paper-meta">{p['year']} <span>·</span> {esc(p['topic'])} <span>·</span> {esc(p['status'])}</p>
 <h3><a href="{esc(p['pdf'])}" target="_blank" rel="noopener">{esc(p['title'])}</a></h3>
 <p class="paper-summary">{esc(p['summary'])}</p><p class="paper-author">{esc(p['authors'])}</p></div>
-<div class="paper-actions"><a class="pdf-button" href="{esc(p['pdf'])}" target="_blank" rel="noopener" aria-label="Read PDF: {esc(p['title'])}">Read PDF <span aria-hidden="true">↗</span></a><a class="download" href="{esc(p['pdf'])}" download="{esc(p['id'])}.pdf" aria-label="Download PDF: {esc(p['title'])}">Download <span aria-hidden="true">↓</span></a><a class="download" href="{esc(citation_page)}" aria-label="View BibTeX citation: {esc(p['title'])}">BibTeX <span aria-hidden="true">→</span></a></div></article>''')
+<div class="paper-actions"><a class="pdf-button" href="{esc(p['pdf'])}" target="_blank" rel="noopener" aria-label="Read PDF: {esc(p['title'])}">Read PDF <span aria-hidden="true">↗</span></a><a class="download" href="{esc(p['pdf'])}" download="{esc(p['id'])}.pdf" aria-label="Download PDF: {esc(p['title'])}">Download <span aria-hidden="true">↓</span></a><a class="download" href="{esc(citation_page)}" aria-label="View BibTeX citation: {esc(p['title'])}">BibTeX <span aria-hidden="true">→</span></a>{evidence_link}</div></article>''')
     template=(ROOT/'template.html').read_text()
     output=template.replace('<!-- PAPERS -->','\n'.join(cards)).replace('{{PAPER_COUNT}}',str(len(papers))).replace('{{PAPER_LABEL}}','report' if len(papers)==1 else 'reports')
     (ROOT/'dist/index.html').write_text(output)

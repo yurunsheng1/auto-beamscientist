@@ -20,3 +20,14 @@ class CatalogTests(unittest.TestCase):
     def test_build_all_papers_and_links(self):
         build();verify()
 if __name__=='__main__':unittest.main()
+
+
+class EvidenceTests(unittest.TestCase):
+    def test_changed_evidence_fingerprint_is_rejected(self):
+        papers=copy.deepcopy(load_papers())
+        report=next(p for p in papers if p.get('evidence'))
+        report['evidence_sha256']='0'*64
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/'papers.json';path.write_text(json.dumps(papers))
+            with self.assertRaisesRegex(ValueError,'Evidence archive fingerprint mismatch'):
+                load_papers(path)
