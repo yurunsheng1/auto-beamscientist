@@ -17,7 +17,7 @@ def verify():
     for ref in parser.refs:
         if ref.startswith('#'): assert ref=='#' or ref[1:] in parser.ids,ref
         elif not ref.startswith(('https:','http:','data:')): assert (ROOT/'dist'/ref).is_file(),ref
-    for marker in ('better optics.','AUTONOMOUS RESEARCH FOR OPTICS','Work in progress','SIMULATION_ONLY','NOVELTY_NOT_VERIFIED','NOT_PUBLICATION_READY'):
+    for marker in ('better optics.','AN AI SCIENTIST FOR STRUCTURED LIGHT','Toward Autonomous Scientific Discovery in Structured Light','Work in progress','SIMULATION_ONLY','NOVELTY_NOT_VERIFIED','NOT_PUBLICATION_READY'):
         assert marker in content,marker
     for paper in load_papers():assert paper['id'] in parser.ids,paper['id']
     assert '<!-- PAPERS -->' not in content
