@@ -37,27 +37,5 @@
       "editor": "Auto BeamScientist + Codex evidence audit",
       "revised_at_utc": "2026-10-24T04:50:14.897692+00:00"
     }
-  },
-  {
-    "id": "phase-dependent-core-validation",
-    "title": "Phase-dependent core collection and window sensitivity",
-    "authors": "AutoPhotonics Project",
-    "year": 2026,
-    "topic": "Numerical validation",
-    "status": "Research report",
-    "pdf": "assets/phase-dependent-core-validation.pdf",
-    "preview": "assets/phase-dependent-core-validation.png",
-    "summary": "Independent propagation and refinement reproduce phase-dependent Pearcey core collection while exposing a window-sensitive Airy enhancement.",
-    "abstract": "We audit nine frozen structured-light experiment batches using a persistent numerical confirmation pipeline. Nineteen hypotheses receive follow-up, and five scalar observations pass mesh, two-window, longitudinal-sampling and independent real-space Fresnel checks. At fixed Pearcey source and collection settings, coherent-minus-incoherent core fractions are +1.9261 percentage points at zero relative phase and -21.0269 percentage points at opposite phase. The latter rejects its registered phase-specific nonnegative prediction while leaving the zero-phase primary prediction intact. An apparent 60.36% Airy valley-filling increase falls to 0.58% under the first enlarged-window diagnostic, so the original large enhancement is not stable. Fixed phase quantization, wavelength hold-out and two noise probes are reported separately, alongside frozen optimized classical controls and invalid or undefined comparisons. These results support reproducible numerical observations and identify concrete limits of the original experiments; familiar coherent interference is not presented as a novel mechanism.",
-    "limitations": "Simulation validation report. Source-library references do not establish novelty. Some controls are undefined under exact cancellation; failed numerical cases are retained. Fixed robustness probes are limited diagnostics, not statistical confidence intervals or experimental validation.",
-    "sha256": "2c0f5c900e7746b135ccf3156c28afb87d23c3640f6bfb9f870f8393a01bbe06",
-    "provenance": {
-      "source": "luna-repaired-20261024/confirmed-history-v2",
-      "review": "Local numerical evidence and PDF audit",
-      "checked_at_utc": "2026-10-24T13:27:19.416014+00:00",
-      "physics_evaluations": 239
-    },
-    "evidence": "assets/phase-dependent-core-validation-evidence.zip",
-    "evidence_sha256": "f645836655f70cf1e51f37a359cc9a8522ba1f2b8b69662894a3e128764737c6"
   }
 ]
