@@ -48,11 +48,17 @@ def build():
     for index,p in enumerate(papers,1):
         citation_path=f"citations/{p['id']}.bib"
         (ROOT/'dist'/citation_path).write_text(bibtex(p))
+        citation_page=f"citations/{p['id']}.html"
+        citation_html=(ROOT/'citation-template.html').read_text()
+        for token,value in {'TITLE':p['title'],'BIBTEX':bibtex(p),
+                            'ID':p['id'],'PDF':p['pdf']}.items():
+            citation_html=citation_html.replace('{{'+token+'}}',esc(value))
+        (ROOT/'dist'/citation_page).write_text(citation_html)
         cards.append(f'''<article class="paper" id="{esc(p['id'])}" data-search="{esc((p['title']+' '+p['topic']).lower(),quote=True)}">
 <div class="paper-no">{index:02d}</div><div class="paper-main"><p class="paper-meta">{p['year']} <span>·</span> {esc(p['topic'])} <span>·</span> {esc(p['status'])}</p>
 <h3><a href="{esc(p['pdf'])}" target="_blank" rel="noopener">{esc(p['title'])}</a></h3>
 <p class="paper-summary">{esc(p['summary'])}</p><p class="paper-author">{esc(p['authors'])}</p></div>
-<div class="paper-actions"><a class="pdf-button" href="{esc(p['pdf'])}" target="_blank" rel="noopener" aria-label="Read PDF: {esc(p['title'])}">Read PDF <span aria-hidden="true">↗</span></a><a class="download" href="{esc(p['pdf'])}" download="{esc(p['id'])}.pdf" aria-label="Download PDF: {esc(p['title'])}">Download <span aria-hidden="true">↓</span></a><a class="download" href="{esc(citation_path)}" download="{esc(p['id'])}.bib" aria-label="Download BibTeX citation: {esc(p['title'])}">BibTeX <span aria-hidden="true">↓</span></a></div></article>''')
+<div class="paper-actions"><a class="pdf-button" href="{esc(p['pdf'])}" target="_blank" rel="noopener" aria-label="Read PDF: {esc(p['title'])}">Read PDF <span aria-hidden="true">↗</span></a><a class="download" href="{esc(p['pdf'])}" download="{esc(p['id'])}.pdf" aria-label="Download PDF: {esc(p['title'])}">Download <span aria-hidden="true">↓</span></a><a class="download" href="{esc(citation_page)}" aria-label="View BibTeX citation: {esc(p['title'])}">BibTeX <span aria-hidden="true">→</span></a></div></article>''')
     template=(ROOT/'template.html').read_text()
     output=template.replace('<!-- PAPERS -->','\n'.join(cards)).replace('{{PAPER_COUNT}}',str(len(papers))).replace('{{PAPER_LABEL}}','report' if len(papers)==1 else 'reports')
     (ROOT/'dist/index.html').write_text(output)

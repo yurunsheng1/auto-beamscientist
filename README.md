@@ -62,4 +62,4 @@ The public collection is labeled **Autonomous Research Reports**. Reports are sh
 
 ## Cite a report
 
-Each report has a **BibTeX** download link. The builder generates `dist/citations/<id>.bib` from catalog metadata. Citations use `@misc` and a braced project author to preserve the group name, with the report's direct PDF URL. No DOI or journal is implied. Regenerate citations when titles or metadata change.
+Each report has a **BibTeX** link to a citation subpage with readable citation text, a copy button, and a `.bib` download. Clipboard failures offer manual selection and download. The builder generates `dist/citations/<id>.bib` from catalog metadata. Citations use `@misc` and a braced project author to preserve the group name, with the report's direct PDF URL. No DOI or journal is implied. Regenerate citations when titles or metadata change.
