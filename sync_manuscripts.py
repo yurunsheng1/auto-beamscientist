@@ -177,7 +177,7 @@ def install_bundle(bundle):
     return changed
 
 
-def sync_once(bridge, remote_source, *, push, local=False, remote="github"):
+def _sync_once(bridge, remote_source, *, push, local=False, remote="github"):
     if git('remote', 'get-url', remote) != EXPECTED_REMOTE:
         raise RuntimeError('Refusing to publish to a different repository')
     if git('branch', '--show-current') != 'main':
@@ -207,6 +207,17 @@ def sync_once(bridge, remote_source, *, push, local=False, remote="github"):
             'research_stage': bundle.get('research_stage'),
             'completed_exports': len(bundle['entries']),
             'export_errors': bundle.get('errors', []), 'commit': git('rev-parse', 'HEAD')}
+
+
+def sync_once(bridge, remote_source, *, push, local=False, remote="github"):
+    # Different research runs can share this website. Serialize fetch, build,
+    # commit and push using the repository, rather than a per-run state lock.
+    lock=(ROOT/'.git/manuscript-publisher.lock').open('a')
+    try:
+        try:fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+        except BlockingIOError:return {'status':'publisher_busy'}
+        return _sync_once(bridge,remote_source,push=push,local=local,remote=remote)
+    finally:lock.close()
 
 
 def main():
