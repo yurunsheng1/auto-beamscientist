@@ -8,6 +8,17 @@ import re
 ROOT = Path(__file__).resolve().parent
 SITE_URL = 'https://yurunsheng1.github.io/auto-beamscientist/'
 
+def project_bibtex():
+    """Cite the project website without implying a journal publication."""
+    return ('@misc{autobeamscientist2026,\n'
+            '  author = {{Auto BeamScientist Project}},\n'
+            '  title = {{Auto BeamScientist}: Toward Autonomous Scientific Discovery in Structured Light},\n'
+            '  year = {2026},\n'
+            '  howpublished = {Project website},\n'
+            f'  url = {{{SITE_URL}}},\n'
+            '  note = {Research prototype for autonomous research in structured optics}\n'
+            '}\n')
+
 def bibtex(paper):
     """Cite the supplied report as an unpublished web resource, not a journal paper."""
     def tex(value):
@@ -45,6 +56,10 @@ def build():
     cards=[]
     citations=ROOT/'dist/citations'
     citations.mkdir(exist_ok=True)
+    (citations/'auto-beamscientist.bib').write_text(project_bibtex())
+    project_page=(ROOT/'project-citation-template.html').read_text()
+    (citations/'auto-beamscientist.html').write_text(
+        project_page.replace('{{BIBTEX}}',esc(project_bibtex())))
     for index,p in enumerate(papers,1):
         citation_path=f"citations/{p['id']}.bib"
         (ROOT/'dist'/citation_path).write_text(bibtex(p))
