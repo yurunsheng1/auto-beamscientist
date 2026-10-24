@@ -12,5 +12,24 @@
     "abstract": "A numerical study of Gaussian-apodized Pearcey and butterfly fields in scalar free-space propagation. A spatial-parity interpretation and equal-budget searches support a conditional concentration advantage within the stated field and phase classes. The study does not establish superiority over unrestricted focusing optics.",
     "limitations": "Simulation study. The advantage depends on the stated field and phase constraints. Peer review and prior-art novelty have not been established.",
     "sha256": "15000675aa066b30fa4fa3c306aa5740b6479c6e529ea0d371b41b26224f9c08"
+  },
+  {
+    "id": "pgcd-c1145095930b",
+    "title": "Fixed-core response to a radial quartic phase in a lens-free scalar-paraxial window: small approximately family-independent changes and an unresolved caustic-specific residual",
+    "authors": "Auto BeamScientist Project",
+    "year": 2026,
+    "topic": "Computational photonics",
+    "status": "Research report",
+    "pdf": "assets/pgcd-c1145095930b.pdf",
+    "preview": "assets/pgcd-c1145095930b.png",
+    "summary": "We report an evidence-bound numerical study of how a rotationally symmetric quartic phase changes fixed-core efficiency in a lens-free scalar-paraxial window.",
+    "abstract": "We report an evidence-bound numerical study of how a rotationally symmetric quartic phase changes fixed-core efficiency in a lens-free scalar-paraxial window. The model-authored question asks whether, for centrosymmetric inputs, the change is fully accounted for by the intensity-moment equivalent quadratic defocus q2,eff = a4 ⟨(r/w)4 ⟩/⟨(r/w)2 ⟩, while noncentrosymmetric caustic fields retain a residual beyond that zero-parameter prediction. We executed five primary free-space cases with a conservative angular-spectrum propagator, no lens, zero rotation, zero relative phase, and unit amplitude weight: Gaussian, Pearcey, Butterfly, Airy, and a matched-curvature chirp-plus-ripple Gaussian control. At quartic strength a4 = 0.7, the fixed-core efficiency decreased relative to the corresponding base arm by 1.60% (Gaussian), 2.21% (Pearcey), and 1.66% (Butterfly). The Airy arm changed by 2.81% but failed its sampling-retention and window-edge diagnostics and is therefore not testable as configured. The matched-curvature control changed the same observable by 29.0%, roughly an order of magnitude more than the quartic term. The pre-registered momentequivalent quadratic arm was not executed, so the discriminating residual R is undefined; the recorded 5% convergence tolerance is also coarser than the measured quartic effect. The data therefore neither support a caustic-specific residual nor establish second-moment universality. They bound a small, same-sign, approximately family-independent quartic response within the executed window and leave the central mechanism unresolved.",
+    "limitations": "Numerical simulation study; see the manuscript for scope and unresolved tests.",
+    "sha256": "420510bd0fe7c760cbcb915a1a8eadaab2f5b5bb74764aec720e467f57623784",
+    "provenance": {
+      "study": "branch_02/evidence",
+      "writer": "AI Scientist-v2",
+      "completed_at_utc": "2026-10-24T03:34:10.749318+00:00"
+    }
   }
 ]
