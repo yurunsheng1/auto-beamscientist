@@ -50,6 +50,32 @@ class ExportTests(unittest.TestCase):
             self.assertEqual(json.loads((bridge / 'request.json').read_text()), request)
             self.assertEqual((bridge / 'last-consumed-manuscript-export.txt').read_text(), identity)
 
+    def test_withdrawn_branch_never_republishes_completed_manuscripts(self):
+        with tempfile.TemporaryDirectory() as temp, mock.patch.object(exporter.subprocess, 'run', side_effect=render):
+            source=Path(temp)
+            fixture(source)
+            fixture(source,'manuscript_retry')
+            (source/'branch_02/publication_status.json').write_text(json.dumps({'status':'withdrawn'}))
+            bundle=exporter.collect(source)
+            self.assertEqual(bundle['entries'],[])
+            self.assertEqual(bundle['withdrawn_ids'],['pgcd-c1145095930b'])
+
+    def test_withdrawal_removes_pdf_preview_citations_and_catalog_entry(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);(root/'dist/assets').mkdir(parents=True);(root/'dist/citations').mkdir();(root/'data').mkdir()
+            identity='pgcd-c1145095930b'
+            paper={'id':identity,'pdf':'assets/'+identity+'.pdf','preview':'assets/'+identity+'.png'}
+            names=[paper['pdf'],paper['preview'],'citations/'+identity+'.bib','citations/'+identity+'.html']
+            for name in names:(root/'dist'/name).write_bytes(b'old artifact')
+            bundle={'schema':'autobeam-public-artifacts-v1','entries':[],'withdrawn_ids':[identity]}
+            with mock.patch.object(sync,'ROOT',root),mock.patch.object(sync,'load_papers',return_value=[paper]),mock.patch.object(sync,'build'),mock.patch.object(sync,'verify'):
+                changed=sync.install_bundle(bundle)
+                self.assertTrue(changed)
+                self.assertEqual(json.loads((root/'data/papers.json').read_text()),[])
+                self.assertTrue(all(not (root/'dist'/name).exists() for name in names))
+            with mock.patch.object(sync,'load_papers',return_value=[]):
+                self.assertEqual(sync.install_bundle(bundle),[])
+
     def test_running_or_unreviewed_pdf_never_exports(self):
         with tempfile.TemporaryDirectory() as temp:
             source = Path(temp)

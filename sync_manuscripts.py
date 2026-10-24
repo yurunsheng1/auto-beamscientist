@@ -135,9 +135,24 @@ def install_bundle(bundle):
         raise ValueError('Unexpected artifact bundle schema')
     # Validate every entry before making any changes.
     entries = [validated_entry(e) for e in bundle['entries']]
+    withdrawn=bundle.get('withdrawn_ids',[])
+    if not isinstance(withdrawn,list) or any(not isinstance(i,str) or not re.fullmatch(r'pgcd-[0-9a-f]{12}',i) for i in withdrawn):
+        raise ValueError('Invalid withdrawn study identifiers')
+    if set(withdrawn)&{metadata['id'] for metadata,_,_ in entries}:
+        raise ValueError('The same study cannot be published and withdrawn')
     papers = load_papers()
     by_id = {p['id']: p for p in papers}
     changed = []
+    for identity in withdrawn:
+        previous=by_id.pop(identity,None)
+        if previous is None:continue
+        for name in [previous['pdf'],previous['preview'],'citations/'+identity+'.bib','citations/'+identity+'.html']:
+            asset=ROOT/'dist'/name
+            if not asset.resolve().is_relative_to((ROOT/'dist').resolve()):
+                raise ValueError('Unsafe withdrawn artifact path')
+            if asset.is_file():
+                asset.unlink();changed.append(str(asset.relative_to(ROOT)))
+        changed.append('data/papers.json')
     for metadata, pdf, preview in entries:
         if by_id.get(metadata['id']) == metadata:
             continue

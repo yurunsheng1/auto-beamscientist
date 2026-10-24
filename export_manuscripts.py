@@ -53,6 +53,9 @@ def export_one(statefile, source):
     if state.get('status') != 'completed' or state.get('stage') != 'finished':
         return None
     directory = statefile.parent
+    publication = directory.parent / 'publication_status.json'
+    if publication.exists() and json.loads(publication.read_text()).get('status') == 'withdrawn':
+        return None
     if not (directory / 'automatic_review.json').is_file():
         return None
     pdf = contained(Path(state['manuscript']), directory)
@@ -123,10 +126,16 @@ def collect(source):
         except Exception as exc:
             errors.append({'artifact': str(statefile.relative_to(source)),
                            'error': str(exc), 'error_type': type(exc).__name__})
+    withdrawn=[]
+    for branch in sorted(source.glob('branch_*')):
+        marker=branch/'publication_status.json'
+        if marker.exists() and json.loads(marker.read_text()).get('status')=='withdrawn':
+            study=str((branch/'evidence').relative_to(source))
+            withdrawn.append('pgcd-'+hashlib.sha256(study.encode()).hexdigest()[:12])
     pipeline = source / 'pipeline_state.json'
     state = json.loads(pipeline.read_text()) if pipeline.exists() else {}
     return {'schema': 'autobeam-public-artifacts-v1', 'entries': list(entries.values()),
-            'errors': errors, 'research_status': state.get('status', 'unknown'),
+            'errors': errors, 'withdrawn_ids': withdrawn, 'research_status': state.get('status', 'unknown'),
             'research_stage': state.get('stage', 'unknown'),
             'exported_at_utc': datetime.datetime.now(datetime.timezone.utc).isoformat()}
 
