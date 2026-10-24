@@ -19,7 +19,7 @@ import uuid
 
 from build_site import build, load_papers
 from verify_site import verify
-from export_manuscripts import MARKER, MAX_PDF_BYTES
+from export_manuscripts import MARKER, MAX_PDF_BYTES, collect
 
 ROOT = Path(__file__).resolve().parent
 REMOTE = '/home/nvidia/Documents/yrs/AutoPhotonics_AI_Scientist_Codex'
@@ -177,16 +177,16 @@ def install_bundle(bundle):
     return changed
 
 
-def sync_once(bridge, remote_source, *, push):
-    if git('remote', 'get-url', 'github') != EXPECTED_REMOTE:
+def sync_once(bridge, remote_source, *, push, local=False, remote="github"):
+    if git('remote', 'get-url', remote) != EXPECTED_REMOTE:
         raise RuntimeError('Refusing to publish to a different repository')
     if git('branch', '--show-current') != 'main':
         raise RuntimeError('Website repository must be on main')
     if git('status', '--porcelain'):
         raise RuntimeError('Website has uncommitted edits; leaving them untouched')
     # Fast-forward only; a website edit must never be overwritten by automation.
-    git('pull', '--ff-only', 'github', 'main')
-    bundle = bridge_collect(bridge, remote_source)
+    git('pull', '--ff-only', remote, 'main')
+    bundle = collect(Path(remote_source)) if local else bridge_collect(bridge, remote_source)
     if bundle is None:
         return {'status': 'bridge_busy'}
     if bundle.get('errors'):
@@ -197,10 +197,10 @@ def sync_once(bridge, remote_source, *, push):
                        cwd=ROOT, check=True, timeout=90)
         git('add', '--', *changed)
         git('commit', '-m', 'Publish completed Auto BeamScientist research manuscripts')
-    ahead = int(git('rev-list', '--count', 'github/main..HEAD'))
+    ahead = int(git('rev-list', '--count', remote+'/main..HEAD'))
     if push and ahead:
         # Retrying a failed push also works when no new manuscript arrived.
-        git('push', 'github', 'HEAD:main')
+        git('push', remote, 'HEAD:main')
         log('Pushed manuscripts to GitHub Pages: ' + git('rev-parse', '--short', 'HEAD'))
     return {'status': 'pushed' if push and ahead else 'no_new_manuscripts',
             'changed': changed, 'research_status': bundle.get('research_status'),
@@ -214,6 +214,8 @@ def main():
     parser.add_argument('--bridge', type=Path, default=Path('/tmp/codex-remote-setup'))
     parser.add_argument('--source', default=REMOTE + '/runs/pgcd/deepening/autonomous')
     parser.add_argument('--state-dir', type=Path, required=True)
+    parser.add_argument('--local', action='store_true', help='Read completed manuscripts from the local research system')
+    parser.add_argument('--remote', default='github', help='Existing Git remote for the authorized website')
     parser.add_argument('--watch', action='store_true')
     parser.add_argument('--push', action='store_true', help='User-authorized GitHub Pages publishing')
     parser.add_argument('--interval', type=float, default=60)
@@ -231,7 +233,7 @@ def main():
             log('Publisher stopped by STOP file')
             break
         try:
-            state = sync_once(args.bridge, args.source, push=args.push)
+            state = sync_once(args.bridge, args.source, push=args.push, local=args.local, remote=args.remote)
         except Exception as exc:
             state = {'status': 'retrying', 'error': str(exc), 'error_type': type(exc).__name__}
         state['checked_at_utc'] = datetime.datetime.now(datetime.timezone.utc).isoformat()

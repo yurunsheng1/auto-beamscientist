@@ -56,8 +56,22 @@ def export_one(statefile, source):
     publication = directory.parent / 'publication_status.json'
     if publication.exists() and json.loads(publication.read_text()).get('status') == 'withdrawn':
         return None
-    if not (directory / 'automatic_review.json').is_file():
+    reviewfile=directory/'automatic_review.json'
+    decisionfile=directory/'automatic_decision.json'
+    if not reviewfile.is_file() or not decisionfile.is_file():
         return None
+    review=json.loads(reviewfile.read_text()).get('review',{})
+    decision=json.loads(decisionfile.read_text())
+    # A successful TeX build is not scientific clearance. Failed, weak or
+    # duplicate drafts stay local and are available for further research.
+    if decision.get('action')!='write_draft' or decision.get('independent_question') is not True:
+        raise ValueError('Publication held: the research manager did not establish a distinct manuscript question')
+    if review.get('Decision')!='Accept' or not isinstance(review.get('Soundness'),(int,float)) or review['Soundness']<3:
+        raise ValueError('Publication held: scientific review requires revision or further research')
+    evidence=contained(Path(state['source_run']),source)
+    evidencefile=evidence/'experiment.json'
+    if not evidencefile.is_file() or json.loads(evidencefile.read_text()).get('schema')!='pgcd_manuscript_v1':
+        raise ValueError('Publication held: artifact is not a research manuscript with scientific evidence')
     pdf = contained(Path(state['manuscript']), directory)
     if not pdf.is_file() or not 10 < pdf.stat().st_size <= MAX_PDF_BYTES:
         raise ValueError('Missing or oversized completed manuscript')

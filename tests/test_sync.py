@@ -19,7 +19,10 @@ def fixture(source, name='manuscript'):
     pdf.write_bytes(b'%PDF-1.5\nunit test fixture, not a research result')
     (directory / 'preprint1.tex').write_text(
         r'\title{A {bounded} numerical test}\author{Auto BeamScientist Project}')
-    (directory / 'automatic_review.json').write_text('{}')
+    (directory / 'automatic_review.json').write_text(json.dumps({'review':{'Decision':'Accept','Soundness':3}}))
+    (directory / 'automatic_decision.json').write_text(json.dumps({'action':'write_draft','independent_question':True}))
+    evidence=source/'branch_02/evidence';evidence.mkdir(exist_ok=True)
+    (evidence/'experiment.json').write_text(json.dumps({'schema':'pgcd_manuscript_v1'}))
     state = {'status': 'completed', 'stage': 'finished', 'manuscript': str(pdf),
              'source_run': str(source / 'branch_02/evidence'),
              'updated_at_utc': '2026-10-24T03:16:00+00:00'}
@@ -87,6 +90,21 @@ class ExportTests(unittest.TestCase):
             path.write_text(json.dumps(state))
             (path.parent / 'automatic_review.json').unlink()
             self.assertEqual(exporter.collect(source)['entries'], [])
+
+    def test_rejected_weak_duplicate_or_audit_documents_are_held(self):
+        for problem in ('rejected','weak','duplicate','audit'):
+            with self.subTest(problem=problem), tempfile.TemporaryDirectory() as temp:
+                source=Path(temp);path,state=fixture(source)
+                if problem in ('rejected','weak'):
+                    review={'Decision':'Reject' if problem=='rejected' else 'Accept','Soundness':2 if problem=='weak' else 3}
+                    (path.parent/'automatic_review.json').write_text(json.dumps({'review':review}))
+                elif problem=='duplicate':
+                    (path.parent/'automatic_decision.json').write_text(json.dumps({'action':'write_draft','independent_question':False}))
+                else:
+                    (source/'branch_02/evidence/experiment.json').write_text('{"schema":"numerical_audit"}')
+                bundle=exporter.collect(source)
+                self.assertEqual(bundle['entries'],[])
+                self.assertIn('Publication held',bundle['errors'][0]['error'])
 
     def test_completed_export_contains_only_public_artifacts_and_is_idempotent(self):
         with tempfile.TemporaryDirectory() as temp, mock.patch.object(exporter.subprocess, 'run', side_effect=render):
