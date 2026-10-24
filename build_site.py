@@ -6,6 +6,21 @@ import json
 import re
 
 ROOT = Path(__file__).resolve().parent
+SITE_URL = 'https://yurunsheng1.github.io/auto-beamscientist/'
+
+def bibtex(paper):
+    """Cite the supplied report as an unpublished web resource, not a journal paper."""
+    def tex(value):
+        escapes={'\\': r'\textbackslash{}', '{': r'\{', '}': r'\}',
+                 '&': r'\&', '%': r'\%', '#': r'\#', '_': r'\_'}
+        return ''.join(escapes.get(char,char) for char in str(value))
+    key=f"autobeamscientist{paper['year']}{paper['id'].replace('-','')}"
+    fields=[('author','{'+tex(paper['authors'])+'}'),
+            ('title',tex(paper['title'])),('year',str(paper['year'])),
+            ('howpublished','Auto BeamScientist autonomous research report'),
+            ('url',SITE_URL+paper['pdf']),
+            ('note','Simulation study. Peer review and novelty have not been established.')]
+    return '@misc{'+key+',\n'+',\n'.join('  '+name+' = {'+value+'}' for name,value in fields)+'\n}\n'
 
 def load_papers(path=None):
     papers=json.loads((path or ROOT/'data/papers.json').read_text())
@@ -28,12 +43,16 @@ def build():
     papers=load_papers()
     esc=html.escape
     cards=[]
+    citations=ROOT/'dist/citations'
+    citations.mkdir(exist_ok=True)
     for index,p in enumerate(papers,1):
+        citation_path=f"citations/{p['id']}.bib"
+        (ROOT/'dist'/citation_path).write_text(bibtex(p))
         cards.append(f'''<article class="paper" id="{esc(p['id'])}" data-search="{esc((p['title']+' '+p['topic']).lower(),quote=True)}">
 <div class="paper-no">{index:02d}</div><div class="paper-main"><p class="paper-meta">{p['year']} <span>·</span> {esc(p['topic'])} <span>·</span> {esc(p['status'])}</p>
 <h3><a href="{esc(p['pdf'])}" target="_blank" rel="noopener">{esc(p['title'])}</a></h3>
 <p class="paper-summary">{esc(p['summary'])}</p><p class="paper-author">{esc(p['authors'])}</p></div>
-<div class="paper-actions"><a class="pdf-button" href="{esc(p['pdf'])}" target="_blank" rel="noopener" aria-label="Read PDF: {esc(p['title'])}">Read PDF <span aria-hidden="true">↗</span></a><a class="download" href="{esc(p['pdf'])}" download="{esc(p['id'])}.pdf" aria-label="Download PDF: {esc(p['title'])}">Download <span aria-hidden="true">↓</span></a></div></article>''')
+<div class="paper-actions"><a class="pdf-button" href="{esc(p['pdf'])}" target="_blank" rel="noopener" aria-label="Read PDF: {esc(p['title'])}">Read PDF <span aria-hidden="true">↗</span></a><a class="download" href="{esc(p['pdf'])}" download="{esc(p['id'])}.pdf" aria-label="Download PDF: {esc(p['title'])}">Download <span aria-hidden="true">↓</span></a><a class="download" href="{esc(citation_path)}" download="{esc(p['id'])}.bib" aria-label="Download BibTeX citation: {esc(p['title'])}">BibTeX <span aria-hidden="true">↓</span></a></div></article>''')
     template=(ROOT/'template.html').read_text()
     output=template.replace('<!-- PAPERS -->','\n'.join(cards)).replace('{{PAPER_COUNT}}',str(len(papers))).replace('{{PAPER_LABEL}}','report' if len(papers)==1 else 'reports')
     (ROOT/'dist/index.html').write_text(output)

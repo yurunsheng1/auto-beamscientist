@@ -59,3 +59,7 @@ These are simulation research manuscripts, not claimed peer-reviewed publication
 The footer embeds an external [Hits](https://github.com/silentsoft/hits) SVG badge, keyed to the GitHub Pages URL. It starts when added; no historical traffic is reconstructed and no artificial offset is set. Counts approximate badge requests, not unique people: repeat visits, caching, bots, blockers and service availability affect them. Visitors request the badge directly from hits.sh; no analytics script, API key, local-storage counter or backend is added. A link opens the provider’s statistics.
 
 The public collection is labeled **Autonomous Research Reports**. Reports are shared for exploration and discussion rather than formal publication; this states the current website purpose without claiming any permanent restriction on future submissions.
+
+## Cite a report
+
+Each report has a **BibTeX** download link. The builder generates `dist/citations/<id>.bib` from catalog metadata. Citations use `@misc` and a braced project author to preserve the group name, with the report's direct PDF URL. No DOI or journal is implied. Regenerate citations when titles or metadata change.
