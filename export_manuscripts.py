@@ -99,6 +99,11 @@ def export_one(statefile, source):
         'provenance': {'study': study, 'writer': 'AI Scientist-v2',
                        'completed_at_utc': state['updated_at_utc']},
     }
+    editorial = state.get('editorial_revision')
+    if editorial:
+        metadata['provenance']['completed_at_utc'] = editorial['original_completed_at_utc']
+        metadata['provenance']['editor'] = editorial['editor']
+        metadata['provenance']['revised_at_utc'] = editorial['revised_at_utc']
     return {'completed': True, 'metadata': metadata,
             'pdf_base64': base64.b64encode(content).decode(),
             'preview_base64': base64.b64encode(preview).decode()}

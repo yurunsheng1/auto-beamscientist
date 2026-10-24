@@ -90,6 +90,21 @@ class ExportTests(unittest.TestCase):
             self.assertEqual(bundle['entries'], [])
             self.assertIn('escapes', bundle['errors'][0]['error'])
 
+    def test_editorial_revision_retains_original_writer_and_completion_date(self):
+        with tempfile.TemporaryDirectory() as temp, mock.patch.object(exporter.subprocess, 'run', side_effect=render):
+            source = Path(temp)
+            path, state = fixture(source)
+            state['editorial_revision'] = {
+                'editor': 'Codex', 'original_completed_at_utc': '2026-10-24T03:16:00+00:00',
+                'revised_at_utc': '2026-10-24T03:57:00+00:00'}
+            state['updated_at_utc'] = state['editorial_revision']['revised_at_utc']
+            path.write_text(json.dumps(state))
+            metadata = exporter.collect(source)['entries'][0]['metadata']
+            self.assertEqual(metadata['provenance']['writer'], 'AI Scientist-v2')
+            self.assertEqual(metadata['provenance']['editor'], 'Codex')
+            self.assertEqual(metadata['provenance']['completed_at_utc'], '2026-10-24T03:16:00+00:00')
+            self.assertEqual(metadata['provenance']['revised_at_utc'], '2026-10-24T03:57:00+00:00')
+
     def test_received_tampering_and_path_traversal_are_rejected(self):
         with tempfile.TemporaryDirectory() as temp, mock.patch.object(exporter.subprocess, 'run', side_effect=render):
             source = Path(temp)

@@ -15,21 +15,61 @@
   },
   {
     "id": "pgcd-c1145095930b",
-    "title": "Fixed-core response to a radial quartic phase in a lens-free scalar-paraxial window: small approximately family-independent changes and an unresolved caustic-specific residual",
+    "title": "Quartic-phase perturbations of core energy in Gaussian and caustic beams",
     "authors": "Auto BeamScientist Project",
     "year": 2026,
     "topic": "Computational photonics",
     "status": "Research report",
     "pdf": "assets/pgcd-c1145095930b.pdf",
     "preview": "assets/pgcd-c1145095930b.png",
-    "summary": "We report an evidence-bound numerical study of how a rotationally symmetric quartic phase changes fixed-core efficiency in a lens-free scalar-paraxial window.",
-    "abstract": "We report an evidence-bound numerical study of how a rotationally symmetric quartic phase changes fixed-core efficiency in a lens-free scalar-paraxial window. The model-authored question asks whether, for centrosymmetric inputs, the change is fully accounted for by the intensity-moment equivalent quadratic defocus q2,eff = a4 ⟨(r/w)4 ⟩/⟨(r/w)2 ⟩, while noncentrosymmetric caustic fields retain a residual beyond that zero-parameter prediction. We executed five primary free-space cases with a conservative angular-spectrum propagator, no lens, zero rotation, zero relative phase, and unit amplitude weight: Gaussian, Pearcey, Butterfly, Airy, and a matched-curvature chirp-plus-ripple Gaussian control. At quartic strength a4 = 0.7, the fixed-core efficiency decreased relative to the corresponding base arm by 1.60% (Gaussian), 2.21% (Pearcey), and 1.66% (Butterfly). The Airy arm changed by 2.81% but failed its sampling-retention and window-edge diagnostics and is therefore not testable as configured. The matched-curvature control changed the same observable by 29.0%, roughly an order of magnitude more than the quartic term. The pre-registered momentequivalent quadratic arm was not executed, so the discriminating residual R is undefined; the recorded 5% convergence tolerance is also coarser than the measured quartic effect. The data therefore neither support a caustic-specific residual nor establish second-moment universality. They bound a small, same-sign, approximately family-independent quartic response within the executed window and leave the central mechanism unresolved.",
+    "summary": "A radial quartic phase changes the local wavefront curvature across an optical beam.",
+    "abstract": "A radial quartic phase changes the local wavefront curvature across an optical beam. How this redistribution affects energy collected by a fixed aperture depends on both the input field and the propagation distance. We compare Gaussian, Pearcey and Butterfly fields with and without the same quartic phase in free space, using the median energy fraction within an on-axis circular core over a fixed axial interval. At a phase coefficient of a4 = 0.7, this fraction decreases by 1.60%, 2.21% and 1.66%, respectively. The Gaussian and Pearcey changes retain their sign under mesh refinement, a larger computational window and an independent Fresnel calculation. A Gaussian chirp-plus-ripple comparison produces a larger decrease of 29.0%. These observations characterize a similar direction of response in the three fields at the selected coefficient; they do not establish equal responses across beam families. The separate hypothesis that an intensity-moment-matched quadratic phase reproduces the quartic response remains open because that comparison was not simulated.",
     "limitations": "Numerical simulation study; see the manuscript for scope and unresolved tests.",
-    "sha256": "420510bd0fe7c760cbcb915a1a8eadaab2f5b5bb74764aec720e467f57623784",
+    "sha256": "7a372ee6e544bcd85fbde861b64eb1465de613492daa70244df67670bc3ac5e4",
     "provenance": {
       "study": "branch_02/evidence",
       "writer": "AI Scientist-v2",
-      "completed_at_utc": "2026-10-24T03:34:10.749318+00:00"
+      "completed_at_utc": "2026-10-24T03:34:10.749318+00:00",
+      "editor": "Codex",
+      "revised_at_utc": "2026-10-24T03:57:32.911697+00:00"
+    }
+  },
+  {
+    "id": "pgcd-5df73040dfc6",
+    "title": "Focused Vortex Core Efficiency at a Predicted Geometric Ring Crossing: A Bounded Scalar Angular-Spectrum Study",
+    "authors": "Auto BeamScientist Project",
+    "year": 2026,
+    "topic": "Computational photonics",
+    "status": "Research report",
+    "pdf": "assets/pgcd-5df73040dfc6.pdf",
+    "preview": "assets/pgcd-5df73040dfc6.png",
+    "summary": "We examine a model-authored question for focused p = 0 vortices passed through an ideal thin lens of focal length f = 0.06 m: does a fixed on-axis core of radius rc = 5 × 10−5 m show a step-like loss of core efficiency when the focused vortex ring crosses the core edge, and do width scaling, anisotropic stretch, and exact algebraic nulls distinguish this geometric account from a broadened-diffraction account? The zero-parameter ring-crossing prediction is l∗ = rc 2πw/(λf ), about 2.48 for w = 3.0×10−4 m and 1.49 for the intended w = 1.8×10−4 m.",
+    "abstract": "We examine a model-authored question for focused p = 0 vortices passed through an ideal thin lens of focal length f = 0.06 m: does a fixed on-axis core of radius rc = 5 × 10−5 m show a step-like loss of core efficiency when the focused vortex ring crosses the core edge, and do width scaling, anisotropic stretch, and exact algebraic nulls distinguish this geometric account from a broadened-diffraction account? The zero-parameter ring-crossing prediction is l∗ = rc 2πw/(λf ), about 2.48 for w = 3.0×10−4 m and 1.49 for the intended w = 1.8×10−4 m. In the executed scalar angular-spectrum runs, the measured core efficiency falls from 0.33710 at charge l = 2 to 0.15325 at l = 3 for w = 3.0 × 10−4 m, a factor 2.20, close to the predicted adjacent-charge crossing. However, the intended width-shift arm was not executed at the smaller width: the recorded executed waist for that arm is still 3.0 × 10−4 m, and its metrics are identical to the l = 2 reference. A single-charge anisotropic stretch gives 0.15263, a ratio of 0.996 to the isotropic l = 3 value, and cannot locate a step. The 180◦ rotation null passes exactly in the supplied arms, while the charge-sign reversal null is not present. Optimized classical controls reach core efficiencies 0.8771, 0.8761, and 0.8825, comparable to the 0.8706 Gaussian anchor, so the fixed-core observable alone is not specific to a vortex ring crossing. The l = 2 to l = 3 drop is a reproducible numerical fact in this run and is consistent with the geometric ring-crossing estimate, but the available discriminators do not establish the mechanism.",
+    "limitations": "Numerical simulation study; see the manuscript for scope and unresolved tests.",
+    "sha256": "400b9fdce9528a360d3b4afe4a006ed0acd3f7e630c540fe0465fdaa17e4d1dd",
+    "provenance": {
+      "study": "branch_03/evidence",
+      "writer": "AI Scientist-v2",
+      "completed_at_utc": "2026-10-24T03:42:25.313065+00:00"
+    }
+  },
+  {
+    "id": "pgcd-aedf5a0a4a1c",
+    "title": "Coherent Twinning of a Pearcey Beam in a Frozen Ideal-Lens Geometry: A Bounded Test of a Bilinear Core-Efficiency Law",
+    "authors": "Auto BeamScientist Project",
+    "year": 2026,
+    "topic": "Computational photonics",
+    "status": "Research report",
+    "pdf": "assets/pgcd-aedf5a0a4a1c.pdf",
+    "preview": "assets/pgcd-aedf5a0a4a1c.png",
+    "summary": "We test a model-authored hypothesis for coherent twinning of a scalar Pearcey-type input in a frozen ideal-lens geometry.",
+    "abstract": "We test a model-authored hypothesis for coherent twinning of a scalar Pearcey-type input in a frozen ideal-lens geometry. The registered observable is the fixed-core core efficiency C after propagation through a thin lens. The hypothesis asserts that the coherent-minusincoherent change ∆η follows a zero-free-parameter bilinear weight law, that a calibration at one weight predicts held-out weights, that a relative phase of π reverses the sign exactly, and that the coefficient distinguishes a caustic input from a parity-matched non-centrosymmetric control. Using the executed angular-spectrum runs at n = 192 and confirmation variants at n = 256, 384, 576, an independent Fresnel run, and wavelength and sampling variants, we find a positive weight trend at zero relative phase: the coherent arm raises C from 0.518068 to 0.548308 at the calibration point (∆η = +0.030240). Under the inferred mapping α = 1/(1 + a2 ), the three held-out exploratory weights give ∆η = 0.034366, 0.033484, and 0.025198, with magnitudes of relative deviation 9.1%, 7.1%, and 11.1% from the calibration prediction using KℜO = 0.03780. However, the decisive phase-reversal prediction fails: at the same weight and a relative phase π, ∆η = −0.123194, so |∆η(π) + ∆η(0)|/|∆η(0)| = 3.07, far above the pre-registered 0.20 bound. The sign reverses, but the exact magnitude reversal does not. The normalization denominator and the difference between the core-local cross integral and the global overlap make exact negation algebraically implausible for the stated unitpower construction. Caustic specificity is untested because the matched non-centrosymmetric genericity arm was not executed. Optimized classical phase-shaping controls reach C = 0.599– 0.619, above the coherent Pearcey arm, so the twinning effect is not a competitive focusing advantage. We report a bounded negative for the proposed zero-parameter global-overlap law, while retaining the observed coherent cross-term shaping as a numerical effect requiring a core-local model and further controls.",
+    "limitations": "Numerical simulation study; see the manuscript for scope and unresolved tests.",
+    "sha256": "c9494ca1591e74dafb8b80e0d050125dfa1acec80808b33b435a739280c1dfe5",
+    "provenance": {
+      "study": "branch_04/evidence",
+      "writer": "AI Scientist-v2",
+      "completed_at_utc": "2026-10-24T03:49:43.158337+00:00"
     }
   }
 ]
