@@ -1,0 +1,3 @@
+// Decorative light trajectories. These curves are artwork, not solver output.
+const rays=document.getElementById('rays');
+if(rays){for(let i=0;i<65;i++){const offset=(i-32)*7.7;const p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',`M -30 ${300+offset} C 170 ${300+offset}, 275 ${300+offset*.04}, 332 ${300+offset*.025} S 490 ${300+offset*.7}, 690 ${300+offset*1.1}`);p.setAttribute('stroke','url(#light)');p.setAttribute('stroke-width',i%4===0?'1.1':'.6');p.setAttribute('fill','none');p.setAttribute('opacity',String(.27+.35*Math.cos(i*.5)**2));rays.appendChild(p);}}
