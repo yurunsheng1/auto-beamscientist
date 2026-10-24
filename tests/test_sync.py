@@ -2,6 +2,7 @@
 from pathlib import Path
 import base64
 import copy
+import fcntl
 import hashlib
 import json
 import tempfile
@@ -172,6 +173,15 @@ class ExportTests(unittest.TestCase):
         bad['completed'] = False
         with self.assertRaises(ValueError):
             sync.validated_entry(bad)
+
+    def test_shared_repository_lock_prevents_overlapping_publishers(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);(root/'.git').mkdir()
+            with (root/'.git/manuscript-publisher.lock').open('a') as lock:
+                fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+                with mock.patch.object(sync,'ROOT',root),mock.patch.object(sync,'_sync_once') as action:
+                    self.assertEqual(sync.sync_once(Path(temp),'unused',push=True),{'status':'publisher_busy'})
+                    action.assert_not_called()
 
     def test_failed_push_is_retried_without_duplicate_commits(self):
         bundle = {'schema': 'autobeam-public-artifacts-v1', 'entries': [],
