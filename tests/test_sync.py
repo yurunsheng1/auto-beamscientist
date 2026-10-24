@@ -36,6 +36,20 @@ def render(command, **kwargs):
 
 
 class ExportTests(unittest.TestCase):
+    def test_delayed_completed_bridge_export_is_consumed_before_new_request(self):
+        with tempfile.TemporaryDirectory() as temp:
+            bridge = Path(temp)
+            identity = 'beam_site_sync_delayed'
+            request = {'id': identity, 'command': 'original export request'}
+            bundle = {'schema': 'autobeam-public-artifacts-v1', 'entries': []}
+            (bridge / 'request.json').write_text(json.dumps(request))
+            (bridge / 'response.json').write_text(json.dumps({
+                'id': identity, 'status': 'complete',
+                'log': exporter.MARKER + json.dumps(bundle)}))
+            self.assertEqual(sync.bridge_collect(bridge, 'unused'), bundle)
+            self.assertEqual(json.loads((bridge / 'request.json').read_text()), request)
+            self.assertEqual((bridge / 'last-consumed-manuscript-export.txt').read_text(), identity)
+
     def test_running_or_unreviewed_pdf_never_exports(self):
         with tempfile.TemporaryDirectory() as temp:
             source = Path(temp)

@@ -49,11 +49,26 @@ def bridge_collect(bridge, remote_source, timeout=100):
         return None
     try:
         request, response = bridge / 'request.json', bridge / 'response.json'
+        consumed = bridge / 'last-consumed-manuscript-export.txt'
+        def read_bundle(result):
+            for line in result.get('log', '').splitlines():
+                if line.startswith(MARKER):
+                    bundle = json.loads(line[len(MARKER):])
+                    consumed.write_text(result['id'])
+                    return bundle
+            return None
         if request.exists() and response.exists():
             q, r = json.loads(request.read_text()), json.loads(response.read_text())
             if r.get('id') != q.get('id') or r.get('status') == 'running':
                 log('Bridge busy; leaving the existing request untouched')
                 return None
+            if (r.get('status') == 'complete' and r.get('id', '').startswith('beam_site_sync_')
+                    and (not consumed.exists() or consumed.read_text() != r['id'])):
+                # Slow tunnel reads can finish after our timeout. Consume that
+                # completed export before issuing another request.
+                bundle = read_bundle(r)
+                if bundle is not None:
+                    return bundle
         identity = 'beam_site_sync_' + uuid.uuid4().hex
         command = ' '.join(shlex.quote(p) for p in [
             REMOTE + '/.venv/bin/python',
@@ -74,9 +89,9 @@ def bridge_collect(bridge, remote_source, timeout=100):
             if result.get('id') != identity:
                 continue
             output = result.get('log', '')
-            for line in output.splitlines():
-                if line.startswith(MARKER):
-                    return json.loads(line[len(MARKER):])
+            bundle = read_bundle(result)
+            if bundle is not None:
+                return bundle
             if result.get('status') in ('failed', 'complete'):
                 raise RuntimeError('Remote artifact export failed: ' +
                                    result.get('error', output[-2000:]))
@@ -139,6 +154,11 @@ def install_bundle(bundle):
         build()
         verify()
         changed += ['data/papers.json', 'dist/index.html']
+        for metadata, _, _ in entries:
+            for suffix in ('.bib', '.html'):
+                citation = ROOT / 'dist/citations' / (metadata['id'] + suffix)
+                if citation.is_file():
+                    changed.append(str(citation.relative_to(ROOT)))
     return changed
 
 
