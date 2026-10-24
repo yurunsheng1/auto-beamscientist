@@ -27,3 +27,7 @@ The catalog and paper count are generated into HTML at build time, so all papers
 The earlier phase-only manuscript is not currently featured. Its original research files remain in the project workspace.
 
 These are simulation research manuscripts, not claimed peer-reviewed publications. Keep `SIMULATION_ONLY`, `NOVELTY_NOT_VERIFIED`, and `NOT_PUBLICATION_READY` until reviewed status changes are supported. The abstract hero artwork is decorative, not physics output. Website changes do not modify or execute the research solver. No live-status or daily-release schedule is claimed.
+
+## Page-view counter
+
+The footer embeds an external [Hits](https://github.com/silentsoft/hits) SVG badge, keyed to the GitHub Pages URL. It starts when added; no historical traffic is reconstructed and no artificial offset is set. Counts approximate badge requests, not unique people: repeat visits, caching, bots, blockers and service availability affect them. Visitors request the badge directly from hits.sh; no analytics script, API key, local-storage counter or backend is added. A link opens the provider’s statistics.

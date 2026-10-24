@@ -3,3 +3,5 @@
 
 /* Spectral accents stay in the decorative light; text retains readable contrast. */
 .hero-visual{background:radial-gradient(ellipse at 52% 48%,#d0f3f680 0,#e6f0ff60 42%,transparent 70%)}
+
+.footer-links{display:flex;align-items:center;gap:24px;flex-wrap:wrap}.visitor-counter{display:inline-flex;align-items:center;min-height:20px}.visitor-counter img{display:block;max-width:100%;font-size:10px}@media(max-width:700px){.footer-main{flex-wrap:wrap;gap:20px}.footer-links{gap:18px}}
