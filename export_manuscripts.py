@@ -72,6 +72,24 @@ def export_one(statefile, source):
     evidencefile=evidence/'experiment.json'
     if not evidencefile.is_file() or json.loads(evidencefile.read_text()).get('schema')!='pgcd_manuscript_v1':
         raise ValueError('Publication held: artifact is not a research manuscript with scientific evidence')
+    packet=json.loads(evidencefile.read_text())
+    checksfile=directory/'scientific_checks.json'
+    if not checksfile.is_file():
+        raise ValueError('Publication held: deterministic scientific checks are missing')
+    checks=json.loads(checksfile.read_text())
+    if checks.get('passed') is not True or checks.get('version')!=1:
+        raise ValueError('Publication held: scientific checks did not pass')
+    if packet.get('protocol_alignment',{}).get('faithful') is not True:
+        raise ValueError('Publication held: research question and executed protocol are not aligned')
+    confirmed=[]
+    for record in packet.get('observations',[]):
+        confirmation=record.get('confirmation',{})
+        if all(confirmation.get(k) is True for k in ('numerical_valid','robustness_validated','control_checks_passed','resolved_nonnull_effect')):
+            confirmed.append(record['hypothesis']['id'])
+    if not confirmed:
+        raise ValueError('Publication held: no independently confirmed nonnull observations with valid controls')
+    if checks.get('evidence_sha256')!=hashlib.sha256(evidencefile.read_bytes()).hexdigest():
+        raise ValueError('Publication held: scientific evidence changed after checks')
     pdf = contained(Path(state['manuscript']), directory)
     if not pdf.is_file() or not 10 < pdf.stat().st_size <= MAX_PDF_BYTES:
         raise ValueError('Missing or oversized completed manuscript')
@@ -79,6 +97,9 @@ def export_one(statefile, source):
     if not content.startswith(b'%PDF-'):
         raise ValueError('Completed artifact is not a PDF')
     tex = contained(directory / 'preprint1.tex', directory).read_text()
+    if (checks.get('pdf_sha256')!=hashlib.sha256(content).hexdigest() or
+        checks.get('tex_sha256')!=hashlib.sha256((directory/'preprint1.tex').read_bytes()).hexdigest()):
+        raise ValueError('Publication held: manuscript changed after scientific checks')
     title = plain_tex(tex_group(tex, 'title'))
     author = plain_tex(tex_group(tex, 'author'))
     if not title or not author:

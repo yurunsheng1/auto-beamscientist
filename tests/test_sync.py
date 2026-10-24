@@ -23,7 +23,14 @@ def fixture(source, name='manuscript'):
     (directory / 'automatic_review.json').write_text(json.dumps({'review':{'Decision':'Accept','Soundness':3}}))
     (directory / 'automatic_decision.json').write_text(json.dumps({'action':'write_draft','independent_question':True}))
     evidence=source/'branch_02/evidence';evidence.mkdir(exist_ok=True)
-    (evidence/'experiment.json').write_text(json.dumps({'schema':'pgcd_manuscript_v1'}))
+    (evidence/'experiment.json').write_text(json.dumps({'schema':'pgcd_manuscript_v1',
+        'protocol_alignment':{'faithful':True},'observations':[{'hypothesis':{'id':'H001'},
+        'confirmation':{'numerical_valid':True,'robustness_validated':True,
+                        'control_checks_passed':True,'resolved_nonnull_effect':True}}]}))
+    (directory/'scientific_checks.json').write_text(json.dumps({'version':1,'passed':True,
+        'evidence_sha256':hashlib.sha256((evidence/'experiment.json').read_bytes()).hexdigest(),
+        'pdf_sha256':hashlib.sha256(pdf.read_bytes()).hexdigest(),
+        'tex_sha256':hashlib.sha256((directory/'preprint1.tex').read_bytes()).hexdigest()}))
     state = {'status': 'completed', 'stage': 'finished', 'manuscript': str(pdf),
              'source_run': str(source / 'branch_02/evidence'),
              'updated_at_utc': '2026-10-24T03:16:00+00:00'}
@@ -40,6 +47,23 @@ def render(command, **kwargs):
 
 
 class ExportTests(unittest.TestCase):
+    def test_accept_cannot_override_unconfirmed_or_changed_scientific_evidence(self):
+        for problem in ('missing_checks','unconfirmed','changed_pdf','changed_tex','changed_evidence','misaligned'):
+            with self.subTest(problem=problem),tempfile.TemporaryDirectory() as temp:
+                source=Path(temp);path,state=fixture(source)
+                evidence=source/'branch_02/evidence/experiment.json'
+                if problem=='missing_checks':(path.parent/'scientific_checks.json').unlink()
+                elif problem=='changed_pdf':(path.parent/'preprint1.pdf').write_bytes(b'%PDF-Changed after review')
+                elif problem=='changed_tex':(path.parent/'preprint1.tex').write_text(r'\title{Changed}\author{A}')
+                else:
+                    data=json.loads(evidence.read_text())
+                    if problem=='unconfirmed':data['observations'][0]['confirmation']['robustness_validated']=False
+                    elif problem=='misaligned':data['protocol_alignment']['faithful']=False
+                    else:data['question']='Changed after checks'
+                    evidence.write_text(json.dumps(data))
+                bundle=exporter.collect(source)
+                self.assertEqual(bundle['entries'],[])
+                self.assertIn('Publication held',bundle['errors'][0]['error'])
     def test_delayed_completed_bridge_export_is_consumed_before_new_request(self):
         with tempfile.TemporaryDirectory() as temp:
             bridge = Path(temp)
