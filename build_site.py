@@ -1,0 +1,43 @@
+"""Build a dependency-free, multi-paper GitHub Pages preview."""
+from pathlib import Path
+import hashlib
+import html
+import json
+import re
+
+ROOT = Path(__file__).resolve().parent
+
+def load_papers(path=None):
+    papers=json.loads((path or ROOT/'data/papers.json').read_text())
+    if not isinstance(papers,list): raise ValueError('papers.json must contain a list')
+    ids=set()
+    for paper in papers:
+        if not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*',paper['id']) or paper['id'] in ids:
+            raise ValueError('Paper IDs must be unique URL-safe slugs')
+        ids.add(paper['id'])
+        for key in ('pdf','preview'):
+            asset=ROOT/'dist'/paper[key]
+            if not asset.resolve().is_relative_to((ROOT/'dist/assets').resolve()) or not asset.is_file():
+                raise ValueError(f'Missing or unsafe {key} asset')
+        pdf=(ROOT/'dist'/paper['pdf']).read_bytes()
+        if not pdf.startswith(b'%PDF-') or hashlib.sha256(pdf).hexdigest()!=paper['sha256']:
+            raise ValueError('PDF fingerprint mismatch')
+    return papers
+
+def build():
+    papers=load_papers()
+    esc=html.escape
+    cards=[]
+    for index,p in enumerate(papers,1):
+        cards.append(f'''<article class="paper" id="{esc(p['id'])}" data-search="{esc((p['title']+' '+p['topic']).lower(),quote=True)}">
+<div class="paper-no">{index:02d}</div><div class="paper-main"><p class="paper-meta">{p['year']} <span>·</span> {esc(p['topic'])} <span>·</span> Research manuscript</p>
+<h3><a href="{esc(p['pdf'])}" target="_blank" rel="noopener">{esc(p['title'])}</a></h3>
+<p class="paper-summary">{esc(p['summary'])}</p><p class="paper-author">{esc(p['authors'])}</p></div>
+<div class="paper-actions"><a class="pdf-button" href="{esc(p['pdf'])}" target="_blank" rel="noopener" aria-label="Read PDF: {esc(p['title'])}">Read PDF <span aria-hidden="true">↗</span></a><a class="download" href="{esc(p['pdf'])}" download="{esc(p['id'])}.pdf" aria-label="Download PDF: {esc(p['title'])}">Download <span aria-hidden="true">↓</span></a></div></article>''')
+    template=(ROOT/'template.html').read_text()
+    output=template.replace('<!-- PAPERS -->','\n'.join(cards)).replace('{{PAPER_COUNT}}',str(len(papers)))
+    (ROOT/'dist/index.html').write_text(output)
+    (ROOT/'dist/.nojekyll').touch()
+    print(f'Built WIP homepage with {len(papers)} manuscripts')
+
+if __name__=='__main__': build()
