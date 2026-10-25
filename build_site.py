@@ -80,15 +80,10 @@ def build():
             citation_html=citation_html.replace('{{'+token+'}}',esc(value))
         (ROOT/'dist'/citation_page).write_text(citation_html)
         code_button=(f'<a class="download" href="{esc(p["code"])}" download="paper_01_runtime_code.zip" aria-label="Download runnable code for: {esc(p["title"])}">Runnable code <span aria-hidden="true">↓</span></a>' if p.get('code') else '')
-        review=p.get('review',{})
-        review_line=('Preprint · AI review: '+review['label']+
-                     (f' ({review["overall"]}/10)' if review.get('overall') is not None else '')+
-                     f' · Soundness {review["soundness"]}/4 · '+review['status']) if review else ''
-        review_html=f'<p class="paper-review">{esc(review_line)}</p>' if review_line else ''
         cards.append(f'''<article class="paper" id="{esc(p['id'])}" data-search="{esc((p['title']+' '+p['topic']).lower(),quote=True)}">
 <div class="paper-no">{index:02d}</div><div class="paper-main"><p class="paper-meta">{p['year']} <span>·</span> {esc(p['topic'])} <span>·</span> {esc(p['status'])}</p>
 <h3><a href="{esc(p['pdf'])}" target="_blank" rel="noopener">{esc(p['title'])}</a></h3>
-<p class="paper-summary">{esc(p['summary'])}</p>{review_html}<p class="paper-author">{esc(p['authors'])}</p></div>
+<p class="paper-summary">{esc(p['summary'])}</p><p class="paper-author">{esc(p['authors'])}</p></div>
 <div class="paper-actions"><a class="pdf-button" href="{esc(p['pdf'])}" target="_blank" rel="noopener" aria-label="Read PDF: {esc(p['title'])}">Read PDF <span aria-hidden="true">↗</span></a><a class="download" href="{esc(p['pdf'])}" download="{esc(p['id'])}.pdf" aria-label="Download PDF: {esc(p['title'])}">Download <span aria-hidden="true">↓</span></a><a class="download" href="{esc(citation_page)}" aria-label="View BibTeX citation: {esc(p['title'])}">BibTeX <span aria-hidden="true">→</span></a>{code_button}</div></article>''')
     template=(ROOT/'template.html').read_text()
     output=template.replace('<!-- PAPERS -->','\n'.join(cards)).replace('{{PAPER_COUNT}}',str(len(papers))).replace('{{PAPER_LABEL}}','report' if len(papers)==1 else 'reports')

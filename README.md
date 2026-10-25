@@ -32,8 +32,10 @@ report; it does not imply a positive result or journal acceptance.
 
 The authorized sharing threshold also requires scientific soundness of at least
 3/4 and either an AI `Accept` or an AI `Reject` with Overall 4–5/10. The latter
-are shared as **Weak reject / Revision needed** preprints with the actual Reject
-decision and scores retained in catalog metadata. This is permission to share a
+are shared as preprints with the actual Reject decision and scores retained in
+catalog metadata. Per the owner's display preference, homepage cards omit AI
+review status and scores; citation notes retain the draft's review context.
+This is permission to share a
 draft, not peer-reviewed acceptance. Numerical confirmation, faithful protocols,
 independent questions, controls and evidence/TeX/PDF integrity checks remain
 required. Superseded revisions and internal audit PDFs are excluded.

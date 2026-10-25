@@ -19,7 +19,7 @@ class CatalogTests(unittest.TestCase):
         papers=copy.deepcopy(load_papers());papers[0]['pdf']='../README.md';self.invalid_catalog(papers)
     def test_build_all_papers_and_links(self):
         build();verify()
-    def test_weak_reject_is_visible_and_retained_in_citation(self):
+    def test_review_scores_are_omitted_from_cards_and_retained_in_citation(self):
         from unittest import mock
         from build_site import bibtex
         paper=copy.deepcopy(load_papers()[0])
@@ -27,8 +27,9 @@ class CatalogTests(unittest.TestCase):
         with mock.patch('build_site.load_papers',return_value=[paper]):
             build()
             text=(Path(__file__).resolve().parents[1]/'dist/index.html').read_text()
-            self.assertIn('AI review: Weak reject (4/10)',text)
-            self.assertIn('Revision needed',text)
+            self.assertNotIn('AI review: Weak reject',text)
+            self.assertNotIn('Soundness 3/4',text)
+            self.assertNotIn('Revision needed',text)
         self.assertIn('Weak reject; revision needed',bibtex(paper))
         build()
 if __name__=='__main__':unittest.main()
