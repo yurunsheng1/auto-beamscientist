@@ -64,6 +64,8 @@ The public collection is labeled **Autonomous Research Reports**. Reports are sh
 
 Each report has a **BibTeX** link to a citation subpage with readable citation text, a copy button, and a `.bib` download. Clipboard failures offer manual selection and download. The builder generates `dist/citations/<id>.bib` from catalog metadata. Citations use `@misc` and a braced project author to preserve the group name, with the report's direct PDF URL. No DOI or journal is implied. Regenerate citations when titles or metadata change.
 
+Paper 01 also includes a **Code & data** download. The bundle contains the bounded CUDA numerical scripts, solver source, frozen protocol, archived numerical outputs, and instructions for rerunning the study. See `reproducibility/paper_01/README.md` for requirements and scope.
+
 ## Research activity snapshot
 
 The homepage's 665 hypothesis records, 13,433 physics evaluations and 129 critique cycles describe the completed campaign associated with the first report, recorded 24 October 2026. Source: `runs/pgcd/latest_status/loop_state.json` (`recorded_hypotheses`, `physics_evaluations`, `completed_cycles`), corroborated by the first report's campaign description. The loop increments `completed_cycles` after saving its scientific critique. These fixed activity counts include repeated attempts, failures and related candidates; they are not discovery counts or live telemetry.
