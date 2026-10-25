@@ -103,5 +103,32 @@
       "writer": "AI Scientist-v2",
       "completed_at_utc": "2026-10-25T08:20:04.645059+00:00"
     }
+  },
+  {
+    "id": "pgcd-0ec7a2bbbee6",
+    "title": "Lens-Associated Core Collection from a Phase-Opposed Pearcey Composition",
+    "authors": "Auto BeamScientist Project",
+    "year": 2026,
+    "topic": "Computational photonics",
+    "status": "Research report",
+    "pdf": "assets/pgcd-0ec7a2bbbee6.pdf",
+    "preview": "assets/pgcd-0ec7a2bbbee6.png",
+    "summary": "A thin lens can change the fraction of optical power collected in a small on-axis region, but that contrast alone does not show that a composed input is responsible for the change.",
+    "abstract": "A thin lens can change the fraction of optical power collected in a small on-axis region, but that contrast alone does not show that a composed input is responsible for the change. We numerically test a registered comparison for an apodized Pearcey source coherently combined with an equal-weight copy rotated by 90◦ and shifted in relative phase by π. The same normalized composed field is propagated with and without an ideal 0.060-m lens, and fixedaxis core efficiency is measured over z = 0.04–0.08 m. At the executed 192 × 192 sampling, the median efficiencies are 0.93463 with the lens and 0.02298 without it, a difference of 0.91165. A 384 × 384 confirmation gives a difference of 0.91405; an independent Fresnel calculation retains the positive sign. The zero-phase control also has a positive lens-minus-free-space difference, 0.78323. The registered directional prediction is therefore supported for these conditions, while the contrast is evidence for lens-associated collection, not for a composition-specific advantage or phase mechanism. Both reported phase-π noise checks fail, so robustness to those perturbations is not established.",
+    "limitations": "AI review: Weak reject; revision needed. Numerical simulation study; see the manuscript for scope and unresolved tests.",
+    "review": {
+      "decision": "Reject",
+      "label": "Weak reject",
+      "overall": 4,
+      "soundness": 3,
+      "kind": "AI review",
+      "status": "Revision needed"
+    },
+    "sha256": "20d074ad46b007ab0716972ad70baaf37118d754a84cb84c59385afcc0d0519e",
+    "provenance": {
+      "study": "batch_0004/branch_01/evidence",
+      "writer": "AI Scientist-v2",
+      "completed_at_utc": "2026-10-25T16:39:26.114552+00:00"
+    }
   }
 ]
