@@ -65,7 +65,9 @@
       "study": "batch_0002/branch_01/evidence",
       "writer": "AI Scientist-v2",
       "completed_at_utc": "2026-10-25T03:06:44.550675+00:00"
-    }
+    },
+    "code": "assets/pgcd-25b0e6a5f760-runtime.zip",
+    "code_sha256": "bd8ab66af5375121b3b29cc033edfd21788b19c4cbb731ce97d16aba0d167eee"
   },
   {
     "id": "pgcd-2c909e8b5d78",
@@ -92,6 +94,8 @@
       "study": "batch_0003/branch_02/evidence",
       "writer": "AI Scientist-v2",
       "completed_at_utc": "2026-10-25T03:30:45.952062+00:00"
-    }
+    },
+    "code": "assets/pgcd-2c909e8b5d78-runtime.zip",
+    "code_sha256": "bd8c2f4cd9740fa092d8fd3dfda4c310654c864290bbd7118541a7bf802360f9"
   }
 ]

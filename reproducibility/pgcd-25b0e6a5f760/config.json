@@ -1,0 +1,50 @@
+{
+  "wavelength_m": 6.33e-07,
+  "aperture_radius_m": 0.0009,
+  "power_w": 1.0,
+  "z_start_m": 0.04,
+  "z_end_m": 0.08,
+  "z_planes": 11,
+  "core_radius_m": 0.00011,
+  "reference_n": 576,
+  "mesh_n": 384,
+  "reference_extent_m": 0.0036,
+  "window_extent_m": 0.0048,
+  "second_window_extent_m": 0.006,
+  "quantization_levels": 256,
+  "held_out_wavelength_m": 6.4e-07,
+  "noise_seeds": [
+    107,
+    109
+  ],
+  "noise_rms_rad": 0.02,
+  "cases": [
+    {
+      "id": "R001H001",
+      "family": "airy",
+      "scale_m": 0.0002,
+      "apodization": 0.1,
+      "phase_radius_m": 0.0003,
+      "transformation": "chirp",
+      "amount": -0.5
+    },
+    {
+      "id": "R001H002",
+      "family": "airy",
+      "scale_m": 0.0002,
+      "apodization": 0.1,
+      "phase_radius_m": 0.0003,
+      "transformation": "chirp",
+      "amount": 0.0
+    },
+    {
+      "id": "R001H003",
+      "family": "airy",
+      "scale_m": 0.0002,
+      "apodization": 0.1,
+      "phase_radius_m": 0.0003,
+      "transformation": "chirp",
+      "amount": 0.5
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "paper_id": "pgcd-2c909e8b5d78",
+  "source_files": {
+    "solver.py": "Numerical angular-spectrum solver plus independent direct Fresnel quadrature only."
+  },
+  "original_solver_sha256": "f35b0804509ab41e22c9d5f4667b1ae72c58cee822e4501562865bc9b6b44108",
+  "frozen_protocol_sha256": "b32c19ee0e103e696c7f87972ed3654e1fa2ad979febda07f0bc588bb33a2bae",
+  "scope": "Fixed paper calculations only. No model access or autonomous research components."
+}

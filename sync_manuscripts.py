@@ -160,6 +160,13 @@ def install_bundle(bundle):
                 asset.unlink();changed.append(str(asset.relative_to(ROOT)))
         changed.append('data/papers.json')
     for metadata, pdf, preview in entries:
+        previous = by_id.get(metadata['id'], {})
+        # Retain separately audited runtime bundles only for the exact same PDF.
+        if previous.get('sha256') == metadata['sha256']:
+            metadata = dict(metadata)
+            for key in ('code', 'code_sha256'):
+                if key in previous:
+                    metadata[key] = previous[key]
         if by_id.get(metadata['id']) == metadata:
             continue
         for key, content in [('pdf', pdf), ('preview', preview)]:

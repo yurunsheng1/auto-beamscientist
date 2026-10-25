@@ -1,0 +1,158 @@
+{
+  "R001H001": {
+    "mesh": {
+      "ratio": 1.1522807718844845,
+      "transformed_core_efficiency": 0.07240181172661518,
+      "base_core_efficiency": 0.0628334807741402
+    },
+    "reference": {
+      "ratio": 1.152774026323764,
+      "transformed_core_efficiency": 0.07159171026125462,
+      "base_core_efficiency": 0.062103854377742226
+    },
+    "window": {
+      "ratio": 1.1528008260127707,
+      "transformed_core_efficiency": 0.07159222562077712,
+      "base_core_efficiency": 0.06210285767090873
+    },
+    "second_window": {
+      "ratio": 1.1527946891761043,
+      "transformed_core_efficiency": 0.07159644446934688,
+      "base_core_efficiency": 0.062106847942296164
+    },
+    "fresnel": {
+      "ratio": 1.1528069183742453,
+      "transformed_core_efficiency": 0.07159222505414642,
+      "base_core_efficiency": 0.06210252897780132
+    },
+    "z_grid": {
+      "ratio": 1.152774026323764,
+      "transformed_core_efficiency": 0.07159171026125462,
+      "base_core_efficiency": 0.062103854377742226
+    },
+    "quantization": {
+      "ratio": 1.1530665498880501,
+      "transformed_core_efficiency": 0.07160987710209311,
+      "base_core_efficiency": 0.062103854377742226
+    },
+    "held_out_wavelength": {
+      "ratio": 1.1539947793642022,
+      "transformed_core_efficiency": 0.07169949220552761,
+      "base_core_efficiency": 0.06213155682128018
+    },
+    "noise_107": {
+      "ratio": 1.1529624028041643,
+      "transformed_core_efficiency": 0.0716034091667616,
+      "base_core_efficiency": 0.062103854377742226
+    },
+    "noise_109": {
+      "ratio": 1.1523811969666795,
+      "transformed_core_efficiency": 0.07156731404406695,
+      "base_core_efficiency": 0.062103854377742226
+    }
+  },
+  "R001H002": {
+    "mesh": {
+      "ratio": 1.0,
+      "transformed_core_efficiency": 0.0628334807741402,
+      "base_core_efficiency": 0.0628334807741402
+    },
+    "reference": {
+      "ratio": 1.0,
+      "transformed_core_efficiency": 0.062103854377742226,
+      "base_core_efficiency": 0.062103854377742226
+    },
+    "window": {
+      "ratio": 1.0,
+      "transformed_core_efficiency": 0.06210285767090873,
+      "base_core_efficiency": 0.06210285767090873
+    },
+    "second_window": {
+      "ratio": 1.0,
+      "transformed_core_efficiency": 0.062106847942296164,
+      "base_core_efficiency": 0.062106847942296164
+    },
+    "fresnel": {
+      "ratio": 1.0,
+      "transformed_core_efficiency": 0.06210252897780132,
+      "base_core_efficiency": 0.06210252897780132
+    },
+    "z_grid": {
+      "ratio": 1.0,
+      "transformed_core_efficiency": 0.062103854377742226,
+      "base_core_efficiency": 0.062103854377742226
+    },
+    "quantization": {
+      "ratio": 1.0,
+      "transformed_core_efficiency": 0.062103854377742226,
+      "base_core_efficiency": 0.062103854377742226
+    },
+    "held_out_wavelength": {
+      "ratio": 1.000051563924214,
+      "transformed_core_efficiency": 0.062134760568167406,
+      "base_core_efficiency": 0.06213155682128018
+    },
+    "noise_107": {
+      "ratio": 1.0000030424144342,
+      "transformed_core_efficiency": 0.062104043323405196,
+      "base_core_efficiency": 0.062103854377742226
+    },
+    "noise_109": {
+      "ratio": 0.9994854393797272,
+      "transformed_core_efficiency": 0.06207189817991229,
+      "base_core_efficiency": 0.062103854377742226
+    }
+  },
+  "R001H003": {
+    "mesh": {
+      "ratio": 0.8751687837686358,
+      "transformed_core_efficiency": 0.05498990094905423,
+      "base_core_efficiency": 0.0628334807741402
+    },
+    "reference": {
+      "ratio": 0.8761448287357725,
+      "transformed_core_efficiency": 0.05441197085761832,
+      "base_core_efficiency": 0.062103854377742226
+    },
+    "window": {
+      "ratio": 0.8761710509679559,
+      "transformed_core_efficiency": 0.05441272607363348,
+      "base_core_efficiency": 0.06210285767090873
+    },
+    "second_window": {
+      "ratio": 0.8761160981003815,
+      "transformed_core_efficiency": 0.05441280928451822,
+      "base_core_efficiency": 0.062106847942296164
+    },
+    "fresnel": {
+      "ratio": 0.8761671006536984,
+      "transformed_core_efficiency": 0.05441219275774247,
+      "base_core_efficiency": 0.06210252897780132
+    },
+    "z_grid": {
+      "ratio": 0.8761448287357725,
+      "transformed_core_efficiency": 0.05441197085761832,
+      "base_core_efficiency": 0.062103854377742226
+    },
+    "quantization": {
+      "ratio": 0.875663900597751,
+      "transformed_core_efficiency": 0.05438210336656847,
+      "base_core_efficiency": 0.062103854377742226
+    },
+    "held_out_wavelength": {
+      "ratio": 0.8747047525989089,
+      "transformed_core_efficiency": 0.05434676803794293,
+      "base_core_efficiency": 0.06213155682128018
+    },
+    "noise_107": {
+      "ratio": 0.8763132557221134,
+      "transformed_core_efficiency": 0.054422430822651316,
+      "base_core_efficiency": 0.062103854377742226
+    },
+    "noise_109": {
+      "ratio": 0.8758586697808541,
+      "transformed_core_efficiency": 0.05439419928355318,
+      "base_core_efficiency": 0.062103854377742226
+    }
+  }
+}

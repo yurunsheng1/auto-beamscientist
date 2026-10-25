@@ -245,6 +245,26 @@ class ExportTests(unittest.TestCase):
                     self.assertEqual(sync.sync_once(Path(temp),'unused',push=True),{'status':'publisher_busy'})
                     action.assert_not_called()
 
+    def test_audited_code_link_survives_sync_only_for_matching_pdf(self):
+        for same_pdf in (True, False):
+            with self.subTest(same_pdf=same_pdf), tempfile.TemporaryDirectory() as temp:
+                root = Path(temp)
+                (root/'dist/assets').mkdir(parents=True)
+                (root/'data').mkdir()
+                metadata = {'id':'pgcd-c1145095930b','sha256':'new-pdf',
+                            'pdf':'assets/test.pdf','preview':'assets/test.png'}
+                previous = dict(metadata, sha256='new-pdf' if same_pdf else 'old-pdf',
+                                code='assets/audited.zip',code_sha256='runtime-hash',summary='old')
+                bundle = {'schema':'autobeam-public-artifacts-v1','entries':[{}]}
+                with mock.patch.object(sync,'ROOT',root), \
+                     mock.patch.object(sync,'load_papers',return_value=[previous]), \
+                     mock.patch.object(sync,'validated_entry',return_value=(metadata,b'%PDF',b'PNG')), \
+                     mock.patch.object(sync,'build'), mock.patch.object(sync,'verify'):
+                    sync.install_bundle(bundle)
+                installed = json.loads((root/'data/papers.json').read_text())[0]
+                self.assertEqual('code' in installed, same_pdf)
+                self.assertEqual('code_sha256' in installed, same_pdf)
+
     def test_failed_push_is_retried_without_duplicate_commits(self):
         bundle = {'schema': 'autobeam-public-artifacts-v1', 'entries': [],
                   'research_status': 'running', 'research_stage': 'writeup'}

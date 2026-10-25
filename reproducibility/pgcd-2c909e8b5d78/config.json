@@ -1,0 +1,41 @@
+{
+  "wavelength_m": 6.33e-07,
+  "aperture_radius_m": 0.0009,
+  "power_w": 1.0,
+  "z_start_m": 0.03,
+  "z_end_m": 0.08,
+  "z_planes": 5,
+  "core_radius_m": 0.0001,
+  "reference_n": 2048,
+  "mesh_n": 1536,
+  "reference_extent_m": 0.008,
+  "window_extent_m": 0.009,
+  "second_window_extent_m": 0.01,
+  "quantization_levels": 256,
+  "held_out_wavelength_m": 6.4e-07,
+  "noise_seeds": [
+    107,
+    109
+  ],
+  "noise_rms_rad": 0.02,
+  "cases": [
+    {
+      "id": "R001H001",
+      "family": "gaussian",
+      "scale_m": 0.0001,
+      "apodization": 0.1,
+      "phase_radius_m": 0.0001,
+      "transformation": "vortex",
+      "amount": 2.0
+    },
+    {
+      "id": "R001H002",
+      "family": "gaussian",
+      "scale_m": 0.0001,
+      "apodization": 0.1,
+      "phase_radius_m": 0.0001,
+      "transformation": "vortex",
+      "amount": 0.0
+    }
+  ]
+}
