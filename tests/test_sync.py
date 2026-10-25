@@ -260,9 +260,12 @@ class ExportTests(unittest.TestCase):
                 return '1'
             return ''
 
-        with mock.patch.object(sync, 'git', side_effect=fake_git), \
+        with tempfile.TemporaryDirectory() as temp, \
+             mock.patch.object(sync, 'ROOT', Path(temp)), \
+             mock.patch.object(sync, 'git', side_effect=fake_git), \
              mock.patch.object(sync, 'bridge_collect', return_value=bundle), \
              mock.patch.object(sync, 'install_bundle', return_value=[]):
+            (Path(temp)/'.git').mkdir()
             state = sync.sync_once(Path('/tmp/bridge-fixture'), 'unused', push=True)
         self.assertEqual(state['status'], 'pushed')
         self.assertIn(('push', 'github', 'HEAD:main'), calls)
