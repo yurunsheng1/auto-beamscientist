@@ -47,6 +47,44 @@ def render(command, **kwargs):
 
 
 class ExportTests(unittest.TestCase):
+    def test_weak_reject_exports_with_disclosure_and_preserved_verdict(self):
+        with tempfile.TemporaryDirectory() as temp, mock.patch.object(exporter.subprocess,'run',side_effect=render):
+            source=Path(temp);path,_=fixture(source)
+            original={'Decision':'Reject','Soundness':3,'Overall':4}
+            reviewfile=path.parent/'automatic_review.json';reviewfile.write_text(json.dumps({'review':original}))
+            bundle=exporter.collect(source)
+            self.assertEqual(bundle['errors'],[])
+            metadata,_,_=sync.validated_entry(bundle['entries'][0])
+            self.assertEqual(metadata['review']['decision'],'Reject')
+            self.assertEqual(metadata['review']['label'],'Weak reject')
+            self.assertIn('revision needed',metadata['limitations'])
+            self.assertEqual(json.loads(reviewfile.read_text())['review'],original)
+            bad=copy.deepcopy(bundle['entries'][0]);bad['metadata']['review']['label']='Accept'
+            with self.assertRaises(ValueError):sync.validated_entry(bad)
+
+    def test_weak_reject_cannot_override_failed_science_or_lower_reviews(self):
+        for problem in ('soundness','overall','missing_overall','unconfirmed','changed_pdf'):
+            with self.subTest(problem=problem),tempfile.TemporaryDirectory() as temp:
+                source=Path(temp);path,_=fixture(source)
+                review={'Decision':'Reject','Soundness':3,'Overall':4}
+                if problem=='soundness':review['Soundness']=2
+                if problem=='overall':review['Overall']=3
+                if problem=='missing_overall':review.pop('Overall')
+                (path.parent/'automatic_review.json').write_text(json.dumps({'review':review}))
+                if problem=='changed_pdf':(path.parent/'preprint1.pdf').write_bytes(b'%PDF-changed')
+                if problem=='unconfirmed':
+                    p=source/'branch_02/evidence/experiment.json';d=json.loads(p.read_text())
+                    d['observations'][0]['confirmation']['numerical_valid']=False;p.write_text(json.dumps(d))
+                bundle=exporter.collect(source)
+                self.assertEqual(bundle['entries'],[])
+                self.assertIn('Publication held',bundle['errors'][0]['error'])
+
+    def test_superseded_weak_reject_is_not_published_as_another_study(self):
+        with tempfile.TemporaryDirectory() as temp:
+            source=Path(temp);fixture(source)
+            (source/'branch_02/publication_status.json').write_text('{"status":"superseded"}')
+            self.assertEqual(exporter.collect(source)['entries'],[])
+
     def test_accept_cannot_override_unconfirmed_or_changed_scientific_evidence(self):
         for problem in ('missing_checks','unconfirmed','changed_pdf','changed_tex','changed_evidence','misaligned'):
             with self.subTest(problem=problem),tempfile.TemporaryDirectory() as temp:

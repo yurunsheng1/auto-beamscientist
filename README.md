@@ -30,6 +30,14 @@ renders the first page, and supplies the PDF SHA-256. Retries of the same study
 update one catalog entry. This completion gate describes a finished research
 report; it does not imply a positive result or journal acceptance.
 
+The authorized sharing threshold also requires scientific soundness of at least
+3/4 and either an AI `Accept` or an AI `Reject` with Overall 4–5/10. The latter
+are shared as **Weak reject / Revision needed** preprints with the actual Reject
+decision and scores retained in catalog metadata. This is permission to share a
+draft, not peer-reviewed acceptance. Numerical confirmation, faithful protocols,
+independent questions, controls and evidence/TeX/PDF integrity checks remain
+required. Superseded revisions and internal audit PDFs are excluded.
+
 `sync_manuscripts.py` runs on the connected Mac, reads the public artifacts through
 the existing VS Code tunnel bridge, verifies them, rebuilds and checks the site,
 commits the changed catalog/assets, and pushes to `github/main`. The existing
@@ -46,6 +54,16 @@ The Mac and its VS Code connection to 4090hk must stay online while syncing.
 Progress is recorded in `publisher_state.json` and `publisher.log` in the state
 directory. Create `STOP` there to stop the watcher. Uncommitted website edits or
 a divergent branch stop that sync attempt and preserve the edits.
+
+For a local checkout with an existing `origin` remote, publish with:
+
+```sh
+python3 sync_manuscripts.py --local --remote origin --push \
+  --source /path/to/run/system --state-dir /path/to/run/publication
+```
+
+Install `pdftotext` and `pdftoppm` on the exporting machine. Use a fresh state
+directory when replacing a stopped publisher so its `STOP` file remains effective.
 
 ## Research provenance
 

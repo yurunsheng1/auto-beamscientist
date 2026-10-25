@@ -19,7 +19,7 @@ import uuid
 
 from build_site import build, load_papers
 from verify_site import verify
-from export_manuscripts import MARKER, MAX_PDF_BYTES, collect
+from export_manuscripts import MARKER, MAX_PDF_BYTES, collect, review_clearance
 
 ROOT = Path(__file__).resolve().parent
 REMOTE = '/home/nvidia/Documents/yrs/AutoPhotonics_AI_Scientist_Codex'
@@ -113,6 +113,12 @@ def validated_entry(item):
             raise ValueError('Invalid public manuscript metadata')
     if metadata['status'] != 'Research report' or not 2020 <= metadata['year'] <= 2100:
         raise ValueError('Invalid manuscript status or year')
+    if 'review' in metadata:
+        review=metadata['review']
+        expected=review_clearance({'Decision':review.get('decision'),'Overall':review.get('overall'),'Soundness':review.get('soundness')})
+        if review!=expected:raise ValueError('Review disclosure does not match the actual verdict and scores')
+        if review['decision']=='Reject' and 'revision needed' not in metadata['limitations'].lower():
+            raise ValueError('Weak-reject preprints must disclose required revision')
     pdf = base64.b64decode(item['pdf_base64'], validate=True)
     preview = base64.b64decode(item['preview_base64'], validate=True)
     if not 10 < len(pdf) <= MAX_PDF_BYTES or not pdf.startswith(b'%PDF-'):
@@ -124,7 +130,7 @@ def validated_entry(item):
     if metadata['pdf'] != 'assets/' + paper_id + '.pdf' or metadata['preview'] != 'assets/' + paper_id + '.png':
         raise ValueError('Unsafe asset path')
     allowed = {'id', 'title', 'authors', 'year', 'topic', 'status', 'pdf', 'preview',
-               'summary', 'abstract', 'limitations', 'sha256', 'provenance'}
+               'summary', 'abstract', 'limitations', 'sha256', 'provenance', 'review'}
     if set(metadata) - allowed:
         raise ValueError('Unexpected public metadata fields')
     return metadata, pdf, preview

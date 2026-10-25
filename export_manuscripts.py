@@ -17,6 +17,19 @@ MARKER = 'AUTOBEAM_MANUSCRIPTS='
 MAX_PDF_BYTES = 15 * 1024 * 1024
 
 
+def review_clearance(review):
+    """User permits weak rejects as labelled preprints; scientific gates remain."""
+    soundness=review.get('Soundness');overall=review.get('Overall');decision=review.get('Decision')
+    if type(soundness) not in (int,float) or not 3<=soundness<=4:
+        raise ValueError('Publication held: scientific soundness must be at least 3/4')
+    weak=(decision=='Reject' and type(overall) in (int,float) and 4<=overall<=5)
+    if decision!='Accept' and not weak:
+        raise ValueError('Publication held: review is below the authorized weak-reject threshold')
+    return {'decision':decision,'label':'Weak reject' if weak else 'Accept',
+            'overall':overall,'soundness':soundness,'kind':'AI review',
+            'status':'Revision needed' if weak else 'AI recommended for sharing'}
+
+
 def contained(path, root):
     path = path.resolve()
     if not path.is_relative_to(root.resolve()):
@@ -54,7 +67,7 @@ def export_one(statefile, source):
         return None
     directory = statefile.parent
     publication = directory.parent / 'publication_status.json'
-    if publication.exists() and json.loads(publication.read_text()).get('status') == 'withdrawn':
+    if publication.exists() and json.loads(publication.read_text()).get('status') in ('withdrawn','superseded'):
         return None
     reviewfile=directory/'automatic_review.json'
     decisionfile=directory/'automatic_decision.json'
@@ -62,12 +75,11 @@ def export_one(statefile, source):
         return None
     review=json.loads(reviewfile.read_text()).get('review',{})
     decision=json.loads(decisionfile.read_text())
-    # A successful TeX build is not scientific clearance. Failed, weak or
-    # duplicate drafts stay local and are available for further research.
+    # Weak rejects may be shared with their actual verdict. Numerical failures
+    # and duplicate studies still cannot pass through manuscript scoring.
     if decision.get('action')!='write_draft' or decision.get('independent_question') is not True:
         raise ValueError('Publication held: the research manager did not establish a distinct manuscript question')
-    if review.get('Decision')!='Accept' or not isinstance(review.get('Soundness'),(int,float)) or review['Soundness']<3:
-        raise ValueError('Publication held: scientific review requires revision or further research')
+    clearance=review_clearance(review)
     evidence=contained(Path(state['source_run']),source)
     evidencefile=evidence/'experiment.json'
     if not evidencefile.is_file() or json.loads(evidencefile.read_text()).get('schema')!='pgcd_manuscript_v1':
@@ -132,7 +144,8 @@ def export_one(statefile, source):
         'preview': 'assets/' + paper_id + '.png',
         'summary': abstract.split('. ')[0] + ('' if abstract.split('. ')[0].endswith('.') else '.'),
         'abstract': abstract,
-        'limitations': 'Numerical simulation study; see the manuscript for scope and unresolved tests.',
+        'limitations': ('AI review: Weak reject; revision needed. ' if clearance['decision']=='Reject' else '')+'Numerical simulation study; see the manuscript for scope and unresolved tests.',
+        'review':clearance,
         'sha256': hashlib.sha256(content).hexdigest(),
         'provenance': {'study': study, 'writer': 'AI Scientist-v2',
                        'completed_at_utc': state['updated_at_utc']},
@@ -164,7 +177,7 @@ def collect(source):
     withdrawn=[]
     for branch in sorted([*source.glob('branch_*'),*source.glob('batch_*/branch_*')]):
         marker=branch/'publication_status.json'
-        if marker.exists() and json.loads(marker.read_text()).get('status')=='withdrawn':
+        if marker.exists() and json.loads(marker.read_text()).get('status') in ('withdrawn','superseded'):
             study=str((branch/'evidence').relative_to(source))
             withdrawn.append('pgcd-'+hashlib.sha256(study.encode()).hexdigest()[:12])
     pipeline = source / 'pipeline_state.json'
