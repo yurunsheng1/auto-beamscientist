@@ -107,3 +107,5 @@ results are never substituted for calculations. Full validation includes mesh,
 window, axial, direct Fresnel and perturbation probes. CUDA is optional for readers.
 Future manuscript synchronization retains these links for the same PDF hash;
 a replacement PDF requires its runtime to be reviewed again.
+
+New research campaigns use a frozen `publication_namespace.json` with a unique `namespace` slug under their source directory. Manuscript IDs then include that campaign identity, so reusing a batch/branch number cannot overwrite a different study from an earlier run. Legacy paper URLs remain unchanged.

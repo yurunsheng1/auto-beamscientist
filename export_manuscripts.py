@@ -17,6 +17,17 @@ MARKER = 'AUTOBEAM_MANUSCRIPTS='
 MAX_PDF_BYTES = 15 * 1024 * 1024
 
 
+def study_id(study, source):
+    marker = Path(source) / 'publication_namespace.json'
+    identity = study
+    if marker.exists():
+        namespace = json.loads(marker.read_text()).get('namespace')
+        if not isinstance(namespace, str) or not re.fullmatch(r'[a-z0-9][a-z0-9-]{0,99}', namespace):
+            raise ValueError('Invalid publication namespace')
+        identity = namespace + '/' + study
+    return 'pgcd-' + hashlib.sha256(identity.encode()).hexdigest()[:12]
+
+
 def review_clearance(review):
     """User permits weak rejects as labelled preprints; scientific gates remain."""
     soundness=review.get('Soundness');overall=review.get('Overall');decision=review.get('Decision')
@@ -129,7 +140,7 @@ def export_one(statefile, source):
     # The evidence source is stable across manuscript retries and revisions.
     evidence = contained(Path(state['source_run']), source)
     study = str(evidence.relative_to(source))
-    paper_id = 'pgcd-' + hashlib.sha256(study.encode()).hexdigest()[:12]
+    paper_id = study_id(study, source)
     with tempfile.TemporaryDirectory(prefix='beam-preview-') as temp:
         prefix = Path(temp) / 'first-page'
         subprocess.run(['pdftoppm', '-f', '1', '-singlefile', '-scale-to', '1100',
@@ -179,7 +190,7 @@ def collect(source):
         marker=branch/'publication_status.json'
         if marker.exists() and json.loads(marker.read_text()).get('status') in ('withdrawn','superseded'):
             study=str((branch/'evidence').relative_to(source))
-            withdrawn.append('pgcd-'+hashlib.sha256(study.encode()).hexdigest()[:12])
+            withdrawn.append(study_id(study, source))
     pipeline = source / 'pipeline_state.json'
     state = json.loads(pipeline.read_text()) if pipeline.exists() else {}
     return {'schema': 'autobeam-public-artifacts-v1', 'entries': list(entries.values()),

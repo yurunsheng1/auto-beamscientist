@@ -47,6 +47,21 @@ def render(command, **kwargs):
 
 
 class ExportTests(unittest.TestCase):
+    def test_new_campaign_cannot_replace_another_campaigns_branch_number(self):
+        with tempfile.TemporaryDirectory() as temp, mock.patch.object(exporter.subprocess,'run',side_effect=render):
+            roots = [Path(temp)/name for name in ('campaign-a','campaign-b')]
+            identities = []
+            for root in roots:
+                fixture(root)
+                (root/'publication_namespace.json').write_text(json.dumps({'namespace':root.name}))
+                first = exporter.collect(root)['entries'][0]['metadata']['id']
+                fixture(root,'manuscript_revision_01')
+                self.assertEqual([e['metadata']['id'] for e in exporter.collect(root)['entries']],[first])
+                identities.append(first)
+                (root/'branch_02/publication_status.json').write_text('{"status":"withdrawn"}')
+                self.assertEqual(exporter.collect(root)['withdrawn_ids'],[first])
+            self.assertNotEqual(*identities)
+
     def test_weak_reject_exports_with_disclosure_and_preserved_verdict(self):
         with tempfile.TemporaryDirectory() as temp, mock.patch.object(exporter.subprocess,'run',side_effect=render):
             source=Path(temp);path,_=fixture(source)
