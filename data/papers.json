@@ -39,5 +39,59 @@
       "editor": "Auto BeamScientist + Codex evidence audit",
       "revised_at_utc": "2026-10-24T04:50:14.897692+00:00"
     }
+  },
+  {
+    "id": "pgcd-25b0e6a5f760",
+    "title": "Quadratic Chirp and Fixed-Axis Core Collection from a Finite-Energy Airy Beam",
+    "authors": "Auto BeamScientist Project",
+    "year": 2026,
+    "topic": "Computational photonics",
+    "status": "Research report",
+    "pdf": "assets/pgcd-25b0e6a5f760.pdf",
+    "preview": "assets/pgcd-25b0e6a5f760.png",
+    "summary": "A quadratic phase changes transverse phase gradients without changing the source-plane intensity.",
+    "abstract": "A quadratic phase changes transverse phase gradients without changing the source-plane intensity. We numerically test the registered prediction that a chirp of amount c = −0.5 raises the median fraction of power inside a fixed on-axis circular core for a finite-energy Airy source with scale 0.20 mm and apodization 0.10, propagated in free space from 0.04 to 0.08 m. In the executed 384 × 384 angular-spectrum calculation, the transformed and base median core fractions are 0.072402 and 0.062833, respectively, giving a ratio of 1.1528. A 576 × 576 reference calculation gives the same ratio to four decimal places. Mesh, window, axial-sampling, and independent paraxial Fresnel checks give ratios near 1.153; the zero-chirp identity control is validated. A measured c = +0.5 comparison gives a ratio below unity, about 0.876, but is a secondary comparison and does not establish a general chirp-sign law. Centroid-aligned collection is higher than fixed-axis collection in both arms, so the primary endpoint reflects both position and intensity distribution. The result supports the registered numerical prediction for this source and collection geometry, but does not isolate a unique mechanism or establish a distinction from the broader literature on chirped Airy beams.",
+    "limitations": "AI review: Weak reject; revision needed. Numerical simulation study; see the manuscript for scope and unresolved tests.",
+    "review": {
+      "decision": "Reject",
+      "label": "Weak reject",
+      "overall": 4,
+      "soundness": 3,
+      "kind": "AI review",
+      "status": "Revision needed"
+    },
+    "sha256": "bc9749d5680181013e976887f706fb401b4bb11279c36d5e0725e31533b90e99",
+    "provenance": {
+      "study": "batch_0002/branch_01/evidence",
+      "writer": "AI Scientist-v2",
+      "completed_at_utc": "2026-10-25T03:06:44.550675+00:00"
+    }
+  },
+  {
+    "id": "pgcd-2c909e8b5d78",
+    "title": "Fixed-axis core collection after a vortex-phase transformation of a Gaussian beam",
+    "authors": "Auto BeamScientist Project",
+    "year": 2026,
+    "topic": "Computational photonics",
+    "status": "Research report",
+    "pdf": "assets/pgcd-2c909e8b5d78.pdf",
+    "preview": "assets/pgcd-2c909e8b5d78.png",
+    "summary": "A phase-only transformation preserves an input beam’s intensity while changing the phase that governs its subsequent diffraction.",
+    "abstract": "A phase-only transformation preserves an input beam’s intensity while changing the phase that governs its subsequent diffraction. We test a registered, condition-specific prediction: for a Gaussian beam with a 0.10 mm amplitude waist, applying a charge +2 vortex phase in free space gives a transformed-to-base ratio no greater than one for the median power fraction in a fixed on-axis circular core over z = 0.03–0.08 m. The 633 nm, 1 W fields are propagated without a lens, and the core radius is 0.10 mm. At the reference numerical tier, the transformed and base median core efficiencies are 0.01763695 and 0.59284526, respectively, giving a ratio of 0.02974967. The transformed core fraction is lower at all five sampled planes. A charge-zero identity control passes; mesh, window, axial-grid, wavelength, quantization, noise-probe, and independent-propagator checks reproduce the directional comparison across the tested variants. These results support the registered prediction for this scalar finite-core observable. They do not isolate a vortex-specific mechanism, establish a charge law or topology, or establish novelty.",
+    "limitations": "AI review: Weak reject; revision needed. Numerical simulation study; see the manuscript for scope and unresolved tests.",
+    "review": {
+      "decision": "Reject",
+      "label": "Weak reject",
+      "overall": 4,
+      "soundness": 3,
+      "kind": "AI review",
+      "status": "Revision needed"
+    },
+    "sha256": "7d1592201344a77419750e8e8882c16d43c00aae6e7240d0e232fa8aa1a38051",
+    "provenance": {
+      "study": "batch_0003/branch_02/evidence",
+      "writer": "AI Scientist-v2",
+      "completed_at_utc": "2026-10-25T03:30:45.952062+00:00"
+    }
   }
 ]
