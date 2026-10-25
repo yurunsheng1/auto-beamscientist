@@ -20,27 +20,6 @@
     }
   },
   {
-    "id": "pgcd-c1145095930b",
-    "title": "Limits of quadratic phase surrogates for finite-core collection in apodized beams",
-    "authors": "Auto BeamScientist Project",
-    "year": 2026,
-    "topic": "Computational photonics",
-    "status": "Research report",
-    "pdf": "assets/pgcd-c1145095930b.pdf",
-    "preview": "assets/pgcd-c1145095930b.png",
-    "summary": "A low-order phase approximation can preserve an input-plane statistic while changing the power collected after propagation.",
-    "abstract": "A low-order phase approximation can preserve an input-plane statistic while changing the power collected after propagation. We test two quadratic surrogates for a radial quartic phase in Gaussian, Pearcey and butterfly fields: one matches the intensity-weighted mean phase, and the other minimizes the intensity-weighted squared phase-gradient error. Both coefficients are calculated before propagation without fitting output data. The observable is the median power fraction inside a fixed on-axis circular core over a free-space axial interval. Across three quartic coefficients, the first surrogate gives residual ratios of 0.81–0.89 relative to its own departure from the unmodified field. The Gaussian reference therefore fails the original proposed equivalence test. The phase-gradient surrogate also underestimates the quartic core fraction, by 9.51–23.27% across the primary cases. Complete-arm mesh, axial-grid and independent Fresnel checks distinguish a persistent surrogate discrepancy from circular-core discretization. The resulting comparisons characterize the limits of these two low-order reductions for the specified fields and collection geometry.",
-    "limitations": "Numerical simulation study; see the manuscript for scope and unresolved tests.",
-    "sha256": "214b524452b8cdae1842fba0c75e0fc0ae61e1ecd05d761ac9235299c5e2f043",
-    "provenance": {
-      "study": "branch_02/evidence",
-      "writer": "AI Scientist-v2",
-      "completed_at_utc": "2026-10-24T03:34:10.749318+00:00",
-      "editor": "Auto BeamScientist + Codex evidence audit",
-      "revised_at_utc": "2026-10-24T04:50:14.897692+00:00"
-    }
-  },
-  {
     "id": "pgcd-25b0e6a5f760",
     "title": "Quadratic Chirp and Fixed-Axis Core Collection from a Finite-Energy Airy Beam",
     "authors": "Auto BeamScientist Project",
