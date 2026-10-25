@@ -76,7 +76,7 @@ def build():
                             'ID':p['id'],'PDF':p['pdf']}.items():
             citation_html=citation_html.replace('{{'+token+'}}',esc(value))
         (ROOT/'dist'/citation_page).write_text(citation_html)
-        code_button=(f'<a class="download" href="{esc(p["code"])}" download="paper_01_reproducibility.zip" aria-label="Download reproducibility code for: {esc(p["title"])}">Code &amp; data <span aria-hidden="true">↓</span></a>' if p.get('code') else '')
+        code_button=(f'<a class="download" href="{esc(p["code"])}" download="paper_01_runtime_code.zip" aria-label="Download runnable code for: {esc(p["title"])}">Runnable code <span aria-hidden="true">↓</span></a>' if p.get('code') else '')
         cards.append(f'''<article class="paper" id="{esc(p['id'])}" data-search="{esc((p['title']+' '+p['topic']).lower(),quote=True)}">
 <div class="paper-no">{index:02d}</div><div class="paper-main"><p class="paper-meta">{p['year']} <span>·</span> {esc(p['topic'])} <span>·</span> {esc(p['status'])}</p>
 <h3><a href="{esc(p['pdf'])}" target="_blank" rel="noopener">{esc(p['title'])}</a></h3>

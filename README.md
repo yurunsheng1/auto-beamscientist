@@ -64,7 +64,7 @@ The public collection is labeled **Autonomous Research Reports**. Reports are sh
 
 Each report has a **BibTeX** link to a citation subpage with readable citation text, a copy button, and a `.bib` download. Clipboard failures offer manual selection and download. The builder generates `dist/citations/<id>.bib` from catalog metadata. Citations use `@misc` and a braced project author to preserve the group name, with the report's direct PDF URL. No DOI or journal is implied. Regenerate citations when titles or metadata change.
 
-Paper 01 also includes a **Code & data** download. The bundle contains the bounded CUDA numerical scripts, solver source, frozen protocol, archived numerical outputs, and instructions for rerunning the study. See `reproducibility/paper_01/README.md` for requirements and scope.
+Paper 01 also includes a **Runnable code** download. It contains only the bounded CUDA scripts and their required solver modules, dependencies, and frozen input protocol. Manuscripts and archived result data are excluded. See `reproducibility/paper_01/README.md` for run instructions.
 
 ## Research activity snapshot
 
