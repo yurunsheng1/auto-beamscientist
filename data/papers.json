@@ -76,5 +76,32 @@
     },
     "code": "assets/pgcd-2c909e8b5d78-runtime.zip",
     "code_sha256": "bd8c2f4cd9740fa092d8fd3dfda4c310654c864290bbd7118541a7bf802360f9"
+  },
+  {
+    "id": "pgcd-e6158aa72e41",
+    "title": "Axial Peak Position of a Chirp- and Quartic-Phase Pearcey Field with a Thin Lens",
+    "authors": "Auto BeamScientist Project",
+    "year": 2026,
+    "topic": "Computational photonics",
+    "status": "Research report",
+    "pdf": "assets/pgcd-e6158aa72e41.pdf",
+    "preview": "assets/pgcd-e6158aa72e41.png",
+    "summary": "We compare the axial location of the brightest sampled transverse pixel for an apodized Pearcey field propagated with an ideal thin lens and in free space.",
+    "abstract": "We compare the axial location of the brightest sampled transverse pixel for an apodized Pearcey field propagated with an ideal thin lens and in free space. The registered input is modified, in order, by a quadratic chirp of +0.5 and a radial quartic phase of +0.2. Both propagation arms use the same transformed input and are evaluated over z = 0.04–0.08 m. In the primary calculation, the sampled peak positions are 0.064 m with the lens and 0.040 m in free space, a lens-minus-free-space difference of +0.024 m. The chirp-only ablation gives 0.060 m and 0.040 m, respectively, or +0.020 m. The supplied numerical confirmation checks pass for these two conditions. However, both free-space maxima occur at the lower boundary of the sampled interval. Under the registered interpretation rule, these boundary-selected peaks do not establish resolved physical focal positions, so the physical comparison is inconclusive. The similar chirp-only result also does not establish an incremental quartic contribution. The calculations do not isolate an operator interaction or a focusing mechanism.",
+    "limitations": "AI review: Weak reject; revision needed. Numerical simulation study; see the manuscript for scope and unresolved tests.",
+    "review": {
+      "decision": "Reject",
+      "label": "Weak reject",
+      "overall": 4,
+      "soundness": 3,
+      "kind": "AI review",
+      "status": "Revision needed"
+    },
+    "sha256": "1e4e9224b3045a1827d7cc7665568d8995924371331940ed435ae7acef2336bc",
+    "provenance": {
+      "study": "batch_0006/branch_02/evidence",
+      "writer": "AI Scientist-v2",
+      "completed_at_utc": "2026-10-25T08:20:04.645059+00:00"
+    }
   }
 ]
