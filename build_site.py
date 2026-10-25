@@ -4,9 +4,30 @@ import hashlib
 import html
 import json
 import re
+from datetime import datetime, timedelta, timezone
+from publication_records import read_records, verified_versions, REPOSITORY
 
 ROOT = Path(__file__).resolve().parent
 SITE_URL = 'https://yurunsheng1.github.io/auto-beamscientist/'
+
+def publication_html(paper, records):
+    esc=html.escape
+    first,current=verified_versions(paper,records)
+    def date(record):
+        stamp=datetime.fromisoformat(record['published_at_utc'].replace('Z','+00:00'))
+        label=stamp.astimezone(timezone(timedelta(hours=8))).strftime('%Y-%m-%d %H:%M:%S UTC+08:00')
+        return f'<time datetime="{esc(record["published_at_utc"])}">{label}</time>'
+    summary=(f'First verified public: {date(first)}' if first else 'Public-release verification pending')
+    blocks=[]
+    for label,record in [('Earliest verified public deployment',first),('Current PDF version',current)]:
+        if record is None:
+            blocks.append(f'<div class="release-version"><h3>{label}</h3><p>Verification pending for this PDF version.</p></div>')
+            continue
+        snapshot=f'https://github.com/{REPOSITORY}/blob/{record["commit_sha"]}/dist/{record["pdf_path"]}'
+        commit=f'https://github.com/{REPOSITORY}/commit/{record["commit_sha"]}'
+        blocks.append(f'<div class="release-version"><h3>{label}</h3><p>{date(record)}</p><div class="release-links"><a href="{esc(record["status_url"])}" target="_blank" rel="noopener">GitHub timestamp ↗</a><a href="{commit}" target="_blank" rel="noopener">Source commit ↗</a><a href="{esc(snapshot)}" target="_blank" rel="noopener">PDF at this commit ↗</a></div><p class="release-hash">SHA-256 <code>{record["pdf_sha256"]}</code></p></div>')
+    panel='<section class="publication-record" id="publication"><p class="eyebrow">PUBLICATION RECORD</p><h2>Public release &amp; version history</h2><p class="publication-explanation">Times are taken from successful GitHub Pages deployment records, rather than editable Git commit dates. File hashes identify the exact PDFs.</p>'+''.join(blocks)+'<a class="download" href="../publication-records.json" download>Download verification receipts ↓</a><p class="publication-explanation">This records verifiable public availability on this site; it is not proof of scientific priority. GitHub may expire historical status records; the downloaded receipts preserve the responses collected during verification.</p></section>'
+    return summary,panel
 
 def project_bibtex():
     """Cite the project website without implying a journal publication."""
@@ -62,6 +83,8 @@ def load_papers(path=None):
 
 def build():
     papers=load_papers()
+    records=read_records()
+    (ROOT/'dist/publication-records.json').write_text(json.dumps(records,indent=2)+'\n')
     esc=html.escape
     cards=[]
     citations=ROOT/'dist/citations'
@@ -74,16 +97,18 @@ def build():
         citation_path=f"citations/{p['id']}.bib"
         (ROOT/'dist'/citation_path).write_text(bibtex(p))
         citation_page=f"citations/{p['id']}.html"
+        publication_summary,publication_panel=publication_html(p,records)
         citation_html=(ROOT/'citation-template.html').read_text()
         for token,value in {'TITLE':p['title'],'BIBTEX':bibtex(p),
                             'ID':p['id'],'PDF':p['pdf']}.items():
             citation_html=citation_html.replace('{{'+token+'}}',esc(value))
+        citation_html=citation_html.replace('{{PUBLICATION_RECORD}}',publication_panel)
         (ROOT/'dist'/citation_page).write_text(citation_html)
         code_button=(f'<a class="download" href="{esc(p["code"])}" download="{esc(Path(p["code"]).name)}" aria-label="Download runnable code for: {esc(p["title"])}">Runnable code <span aria-hidden="true">↓</span></a>' if p.get('code') else '')
         cards.append(f'''<article class="paper" id="{esc(p['id'])}" data-search="{esc((p['title']+' '+p['topic']).lower(),quote=True)}">
 <div class="paper-no">{index:02d}</div><div class="paper-main"><p class="paper-meta">{p['year']} <span>·</span> {esc(p['topic'])} <span>·</span> {esc(p['status'])}</p>
 <h3><a href="{esc(p['pdf'])}" target="_blank" rel="noopener">{esc(p['title'])}</a></h3>
-<p class="paper-summary">{esc(p['summary'])}</p><p class="paper-author">{esc(p['authors'])}</p></div>
+<p class="paper-summary">{esc(p['summary'])}</p><p class="paper-author">{esc(p['authors'])}</p><p class="publication-date">{publication_summary}<br><a href="{esc(citation_page)}#publication">Verify publication &amp; PDF version →</a></p></div>
 <div class="paper-actions"><a class="pdf-button" href="{esc(p['pdf'])}" target="_blank" rel="noopener" aria-label="Read PDF: {esc(p['title'])}">Read PDF <span aria-hidden="true">↗</span></a><a class="download" href="{esc(p['pdf'])}" download="{esc(p['id'])}.pdf" aria-label="Download PDF: {esc(p['title'])}">Download <span aria-hidden="true">↓</span></a><a class="download" href="{esc(citation_page)}" aria-label="View BibTeX citation: {esc(p['title'])}">BibTeX <span aria-hidden="true">→</span></a>{code_button}</div></article>''')
     template=(ROOT/'template.html').read_text()
     output=template.replace('<!-- PAPERS -->','\n'.join(cards)).replace('{{PAPER_COUNT}}',str(len(papers))).replace('{{PAPER_LABEL}}','report' if len(papers)==1 else 'reports')

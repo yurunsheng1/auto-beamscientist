@@ -109,3 +109,12 @@ Future manuscript synchronization retains these links for the same PDF hash;
 a replacement PDF requires its runtime to be reviewed again.
 
 New research campaigns use a frozen `publication_namespace.json` with a unique `namespace` slug under their source directory. Manuscript IDs then include that campaign identity, so reusing a batch/branch number cannot overwrite a different study from an earlier run. Legacy paper URLs remain unchanged.
+## Verifiable public-release times
+
+Each report links to a publication record on its citation page. The record separates its earliest verified successful GitHub Pages deployment from the first verified deployment of the **current PDF hash**. Times are displayed as UTC+08:00 and link to GitHub's deployment-status API, the exact source commit, and the PDF preserved at that commit. `dist/publication-records.json` provides downloadable receipts. Git author/committer dates and model completion times are not treated as publication evidence.
+
+`data/publication-records.json` preserves the initial verified receipts. With GitHub CLI authenticated, `python3 publication_records.py` refreshes evidence using read-only API requests and verifies PDF bytes against the deployed source commits. `build_site.py` is offline and never manufactures timestamps. Missing evidence or a new PDF hash displays **verification pending**.
+
+The normal Pages workflow reads available deployment records before building. A separate `Refresh public-release records` workflow runs once after a successful normal deployment to capture newly public PDFs and republish the verified timestamps. It listens only to `Deploy GitHub Pages`, so its own deployment does not trigger a loop. Neither workflow pushes repository changes or changes manuscript content. The two workflows share the Pages concurrency group.
+
+These records establish the public availability observed in GitHub's deployment history, not independent scientific priority or protection against competing work. They are not a qualified timestamp authority. GitHub documents a 90-day retention period for previous deployment statuses; full API responses are preserved here, but a saved response is not a cryptographically signed attestation. Preserve the repository and consider a separate archival release for longer-term records.

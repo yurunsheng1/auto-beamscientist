@@ -1,6 +1,7 @@
 """Check generated local links, manuscript hashes, and WIP disclosures."""
 from html.parser import HTMLParser
 from pathlib import Path
+from urllib.parse import urlsplit
 from build_site import load_papers
 ROOT=Path(__file__).resolve().parent
 class Links(HTMLParser):
@@ -14,9 +15,17 @@ class Links(HTMLParser):
 def verify():
     content=(ROOT/'dist/index.html').read_text()
     parser=Links();parser.feed(content)
-    for ref in parser.refs:
-        if ref.startswith('#'): assert ref=='#' or ref[1:] in parser.ids,ref
-        elif not ref.startswith(('https:','http:','data:')): assert (ROOT/'dist'/ref).is_file(),ref
+    for page in (ROOT/'dist').rglob('*.html'):
+        links=Links();links.feed(page.read_text())
+        for ref in links.refs:
+            url=urlsplit(ref)
+            if url.scheme or url.netloc:continue
+            target=page.parent/url.path if url.path else page
+            assert target.resolve().is_relative_to((ROOT/'dist').resolve()),ref
+            assert target.is_file(),ref
+            if url.fragment:
+                destination=Links();destination.feed(target.read_text())
+                assert url.fragment in destination.ids,ref
     for marker in ('better optics.','AN AI SCIENTIST FOR STRUCTURED LIGHT','Toward Autonomous Scientific Discovery in Structured Light','Work in progress','SIMULATION_ONLY','NOVELTY_NOT_VERIFIED','NOT_PUBLICATION_READY'):
         assert marker in content,marker
     for paper in load_papers():assert paper['id'] in parser.ids,paper['id']

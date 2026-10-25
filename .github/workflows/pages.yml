@@ -5,6 +5,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+  deployments: read
   pages: write
   id-token: write
 concurrency:
@@ -18,11 +19,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - name: Build and verify manuscripts
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
+          python publication_records.py
           python build_site.py
           python verify_site.py
           python -m unittest discover -s tests -q
