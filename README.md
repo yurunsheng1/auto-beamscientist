@@ -121,7 +121,7 @@ These records establish the public availability observed in GitHub's deployment 
 
 ## Country and region statistics
 
-The homepage's **Countries & regions** section embeds the live country-flag image from `https://flagcounter.me/kMd`, with the public aggregate statistics at `https://flagcounter.me/details/kMd`. The image displays country counts; the provider's detail page also supports subdivision (state/province) statistics for this new counter, currently offered as a free preview. No fake sample traffic or historical counts are inserted.
+The footer's small bottom-right geography counter embeds the live country-flag image from `https://flagcounter.me/kMd`, with the public aggregate statistics at `https://flagcounter.me/details/kMd`. The image displays country counts; the provider's detail page also supports subdivision (state/province) statistics for this new counter, currently offered as a free preview. No fake sample traffic or historical counts are inserted.
 
 The service estimates locations from requests' IP addresses. Its unique count is lifetime per IP, not verified people, and is independent of the existing Hits page-view count. VPNs, shared IPs, image proxies, browser caches and blockers affect it. The provider processes IP/user-agent information; public statistics do not display IP addresses. The widget is loaded directly by the visitor's browser as an external image; no tracking script or location-permission request is added. The widget is requested when the homepage loads, even before a visitor scrolls to the statistics section. See [provider privacy](https://www.flagcounter.me/privacy).
 
