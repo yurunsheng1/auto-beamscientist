@@ -34,7 +34,7 @@ The authorized sharing threshold also requires scientific soundness of at least
 3/4 and either an AI `Accept` or an AI `Reject` with Overall 4–5/10. The latter
 are shared as preprints with the actual Reject decision and scores retained in
 catalog metadata. Per the owner's display preference, homepage cards and citation
-notes omit AI review labels and scores. Paper actions are **Paper** and **Code**;
+notes omit AI review labels and scores. Paper actions are **Paper**, **Code** (when available) and **BibTeX**;
 the underlying review records and export checks remain unchanged.
 This is permission to share a
 draft, not peer-reviewed acceptance. Numerical confirmation, faithful protocols,

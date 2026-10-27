@@ -107,7 +107,7 @@ def build():
 <div class="paper-no">{index:02d}</div><div class="paper-main"><p class="paper-meta">{p['year']} <span>·</span> {esc(p['topic'])} <span>·</span> {esc(p['status'])}</p>
 <h3><a href="{esc(p['pdf'])}" target="_blank" rel="noopener">{esc(p['title'])}</a></h3>
 <p class="paper-summary">{esc(p['summary'])}</p><p class="paper-author">{esc(p['authors'])}</p><p class="publication-date">{publication_summary}<br><a href="{esc(citation_page)}#publication">Verify publication &amp; PDF version →</a></p></div>
-<div class="paper-actions"><a class="pdf-button" href="{esc(p['pdf'])}" target="_blank" rel="noopener" aria-label="Read paper: {esc(p['title'])}">Paper <span aria-hidden="true">↗</span></a>{code_button}</div></article>''')
+<div class="paper-actions"><a class="pdf-button" href="{esc(p['pdf'])}" target="_blank" rel="noopener" aria-label="Read paper: {esc(p['title'])}">Paper <span aria-hidden="true">↗</span></a>{code_button}<a class="download" href="{esc(citation_page)}" aria-label="View BibTeX citation: {esc(p['title'])}">BibTeX <span aria-hidden="true">→</span></a></div></article>''')
     template=(ROOT/'template.html').read_text()
     output=template.replace('<!-- PAPERS -->','\n'.join(cards)).replace('{{PAPER_COUNT}}',str(len(papers))).replace('{{PAPER_LABEL}}','report' if len(papers)==1 else 'reports')
     (ROOT/'dist/index.html').write_text(output)
