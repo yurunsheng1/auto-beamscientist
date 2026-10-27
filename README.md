@@ -33,8 +33,9 @@ report; it does not imply a positive result or journal acceptance.
 The authorized sharing threshold also requires scientific soundness of at least
 3/4 and either an AI `Accept` or an AI `Reject` with Overall 4–5/10. The latter
 are shared as preprints with the actual Reject decision and scores retained in
-catalog metadata. Per the owner's display preference, homepage cards omit AI
-review status and scores; citation notes retain the draft's review context.
+catalog metadata. Per the owner's display preference, homepage cards and citation
+notes omit AI review labels and scores. Paper actions are **Paper** and **Code**;
+the underlying review records and export checks remain unchanged.
 This is permission to share a
 draft, not peer-reviewed acceptance. Numerical confirmation, faithful protocols,
 independent questions, controls and evidence/TeX/PDF integrity checks remain
@@ -107,6 +108,13 @@ results are never substituted for calculations. Full validation includes mesh,
 window, axial, direct Fresnel and perturbation probes. CUDA is optional for readers.
 Future manuscript synchronization retains these links for the same PDF hash;
 a replacement PDF requires its runtime to be reviewed again.
+
+The centroid-inversion report has a separate fixed runtime under
+`reproducibility/pgcd-5c2846632a64/`. It reproduces the four weights, six numerical
+tiers, matched coherent/incoherent centroids and fixed-propagation detector
+windows. Its download uses the same explicit seven-file allowlist and hash
+manifest. The numerical solver is standalone; no autonomous research engine,
+model access, prompts, scheduling, writing, review or publishing code is included.
 
 New research campaigns use a frozen `publication_namespace.json` with a unique `namespace` slug under their source directory. Manuscript IDs then include that campaign identity, so reusing a batch/branch number cannot overwrite a different study from an earlier run. Legacy paper URLs remain unchanged.
 ## Verifiable public-release times

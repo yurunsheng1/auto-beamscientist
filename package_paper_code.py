@@ -6,7 +6,7 @@ import json
 import zipfile
 
 ROOT = Path(__file__).resolve().parent
-PAPERS = ('pgcd-25b0e6a5f760', 'pgcd-2c909e8b5d78')
+PAPERS = ('pgcd-25b0e6a5f760', 'pgcd-2c909e8b5d78', 'pgcd-5c2846632a64')
 FILES = ('README.md', 'requirements.txt', 'solver.py', 'reproduce.py',
          'config.json', 'expected.json', 'provenance.json')
 IMPORTS = {'argparse', 'csv', 'dataclasses', 'gc', 'json', 'numpy', 'pathlib',

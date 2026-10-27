@@ -47,9 +47,7 @@ def bibtex(paper):
                  '&': r'\&', '%': r'\%', '#': r'\#', '_': r'\_'}
         return ''.join(escapes.get(char,char) for char in str(value))
     key=f"autobeamscientist{paper['year']}{paper['id'].replace('-','')}"
-    review=paper.get('review',{})
-    note=('Simulation preprint. AI review: Weak reject; revision needed. Novelty has not been established.'
-          if review.get('decision')=='Reject' else 'Simulation study. Peer review and novelty have not been established.')
+    note='Simulation study. Peer review and novelty have not been established.'
     fields=[('author','{'+tex(paper['authors'])+'}'),
             ('title',tex(paper['title'])),('year',str(paper['year'])),
             ('howpublished','Auto BeamScientist autonomous research report'),
@@ -104,12 +102,12 @@ def build():
             citation_html=citation_html.replace('{{'+token+'}}',esc(value))
         citation_html=citation_html.replace('{{PUBLICATION_RECORD}}',publication_panel)
         (ROOT/'dist'/citation_page).write_text(citation_html)
-        code_button=(f'<a class="download" href="{esc(p["code"])}" download="{esc(Path(p["code"]).name)}" aria-label="Download runnable code for: {esc(p["title"])}">Runnable code <span aria-hidden="true">↓</span></a>' if p.get('code') else '')
+        code_button=(f'<a class="download" href="{esc(p["code"])}" download="{esc(Path(p["code"]).name)}" aria-label="Download numerical code for: {esc(p["title"])}">Code <span aria-hidden="true">↓</span></a>' if p.get('code') else '')
         cards.append(f'''<article class="paper" id="{esc(p['id'])}" data-search="{esc((p['title']+' '+p['topic']).lower(),quote=True)}">
 <div class="paper-no">{index:02d}</div><div class="paper-main"><p class="paper-meta">{p['year']} <span>·</span> {esc(p['topic'])} <span>·</span> {esc(p['status'])}</p>
 <h3><a href="{esc(p['pdf'])}" target="_blank" rel="noopener">{esc(p['title'])}</a></h3>
 <p class="paper-summary">{esc(p['summary'])}</p><p class="paper-author">{esc(p['authors'])}</p><p class="publication-date">{publication_summary}<br><a href="{esc(citation_page)}#publication">Verify publication &amp; PDF version →</a></p></div>
-<div class="paper-actions"><a class="pdf-button" href="{esc(p['pdf'])}" target="_blank" rel="noopener" aria-label="Read PDF: {esc(p['title'])}">Read PDF <span aria-hidden="true">↗</span></a><a class="download" href="{esc(p['pdf'])}" download="{esc(p['id'])}.pdf" aria-label="Download PDF: {esc(p['title'])}">Download <span aria-hidden="true">↓</span></a><a class="download" href="{esc(citation_page)}" aria-label="View BibTeX citation: {esc(p['title'])}">BibTeX <span aria-hidden="true">→</span></a>{code_button}</div></article>''')
+<div class="paper-actions"><a class="pdf-button" href="{esc(p['pdf'])}" target="_blank" rel="noopener" aria-label="Read paper: {esc(p['title'])}">Paper <span aria-hidden="true">↗</span></a>{code_button}</div></article>''')
     template=(ROOT/'template.html').read_text()
     output=template.replace('<!-- PAPERS -->','\n'.join(cards)).replace('{{PAPER_COUNT}}',str(len(papers))).replace('{{PAPER_LABEL}}','report' if len(papers)==1 else 'reports')
     (ROOT/'dist/index.html').write_text(output)

@@ -130,5 +130,36 @@
       "writer": "AI Scientist-v2",
       "completed_at_utc": "2026-10-25T16:39:26.114552+00:00"
     }
+  },
+  {
+    "id": "pgcd-5c2846632a64",
+    "title": "Centroid Excursion of an Apodized Butterfly Field and Its Inversion Pair",
+    "authors": "Auto BeamScientist Project",
+    "year": 2026,
+    "topic": "Computational photonics",
+    "status": "Research report",
+    "pdf": "assets/pgcd-5c2846632a64.pdf",
+    "preview": "assets/pgcd-5c2846632a64.png",
+    "summary": "A field and its spatially inverted copy can suppress inversion-odd moments under symmetry conditions, but that identity alone does not determine a finite-interval centroid excursion.",
+    "abstract": "A field and its spatially inverted copy can suppress inversion-odd moments under symmetry conditions, but that identity alone does not determine a finite-interval centroid excursion. We examine the registered comparison for an apodized butterfly field: a coherent copy rotated by 180◦ , with zero relative phase and amplitude weight 0.8, versus the single source in free space from z = 0.02 to 0.06 m. The reference centroid excursions are 0.421 × 10−6 m for the coherent pair and 3.708 × 10−6 m for the single source, giving a difference of −3.286 × 10−6 m. This nonzero contrast is reproduced across numerical tiers, but the 2.286 × 10−6 m margin beyond the registered 1 × 10−6 m reduction threshold is smaller than the 3.125 × 10−6 m confirmation error floor. The registered error-margin criterion is therefore not passed. A measured weight series and incoherent-mixture comparison show that reduced excursion is not unique to coherent pairing. A conditional parity identity, including overlap-dependent normalization, agrees closely with the saved trajectories under its stated assumptions; it does not establish a general weight law or a coherence-specific mechanism.",
+    "limitations": "AI review: Weak reject; revision needed. Numerical simulation study; see the manuscript for scope and unresolved tests.",
+    "review": {
+      "decision": "Reject",
+      "label": "Weak reject",
+      "overall": 4,
+      "soundness": 3,
+      "kind": "AI review",
+      "status": "Revision needed"
+    },
+    "sha256": "93b47a255e03562edb6fd12d9a5a024d2498592ab2ef2e396463607fded0d66c",
+    "provenance": {
+      "study": "batch_0001/branch_01/review_research_83cf258b1be1/evidence_review_complete",
+      "writer": "AI Scientist-v2",
+      "completed_at_utc": "2026-10-27T02:34:19.095463+00:00",
+      "editor": "Auto BeamScientist + Codex numerical-table and language audit",
+      "revised_at_utc": "2026-10-27T02:39:58.813208+00:00"
+    },
+    "code": "assets/pgcd-5c2846632a64-runtime.zip",
+    "code_sha256": "f26c51b6f759fe0e0691b72ffe482aedde4c18c8c6fa49568d7c6b9c381b5b05"
   }
 ]

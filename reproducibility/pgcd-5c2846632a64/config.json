@@ -1,0 +1,70 @@
+{
+  "paper_id": "pgcd-5c2846632a64",
+  "wavelength_m": 6.33e-07,
+  "power_w": 1.0,
+  "aperture_radius_m": 0.0009,
+  "source_scale_m": 0.0003,
+  "waist_m": 0.0003,
+  "rotation_rad": 3.141592653589793,
+  "relative_phase_rad": 0.0,
+  "z_start_m": 0.02,
+  "z_end_m": 0.06,
+  "weights": [
+    0.0,
+    0.4,
+    0.8,
+    1.0
+  ],
+  "gpu_memory_mb": 8192,
+  "detector_half_widths_m": [
+    0.0012,
+    0.0018,
+    0.0024
+  ],
+  "original_difference_target_m": -1e-06,
+  "original_error_floor_m": 3.125e-06,
+  "tiers": [
+    {
+      "label": "reference",
+      "n": 384,
+      "extent_m": 0.0024,
+      "planes": 11,
+      "propagator": "asm"
+    },
+    {
+      "label": "mesh",
+      "n": 768,
+      "extent_m": 0.0024,
+      "planes": 11,
+      "propagator": "asm"
+    },
+    {
+      "label": "axial",
+      "n": 768,
+      "extent_m": 0.0024,
+      "planes": 41,
+      "propagator": "asm"
+    },
+    {
+      "label": "fresnel",
+      "n": 768,
+      "extent_m": 0.0024,
+      "planes": 41,
+      "propagator": "fresnel"
+    },
+    {
+      "label": "window",
+      "n": 1152,
+      "extent_m": 0.0036,
+      "planes": 41,
+      "propagator": "asm"
+    },
+    {
+      "label": "second_window",
+      "n": 1536,
+      "extent_m": 0.0048,
+      "planes": 41,
+      "propagator": "asm"
+    }
+  ]
+}
